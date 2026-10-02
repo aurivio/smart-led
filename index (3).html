@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#7c54fe">
+<meta name="description" content="Подбор метода управления освещением Maytoni по объекту, источникам света и задачам проекта.">
+<title>Конфигуратор управления освещением Maytoni</title>
+<style>
+:root{--violet:#7c54fe;--violet-dark:#6038db;--violet-soft:#f1edff;--ink:#282332;--muted:#787878;--line:#e7e3ee;--surface:#fff;--bg:#f7f6fa;--amber:#fff6df;--amber-ink:#805b14;--green:#237455;--green-soft:#edf7f1;--radius:20px;--shadow:0 12px 40px #2b164d08}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-bottom:120px}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.45}button,a,input,select,summary{-webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #ad92ff;outline-offset:3px}button{touch-action:manipulation}h1,h2,h3,p{margin:0}h1{font-size:clamp(27px,3.1vw,39px);line-height:1.16;letter-spacing:-1.1px;font-weight:720}h2{font-size:20px;line-height:1.3;letter-spacing:-.35px}h3{font-size:17px;line-height:1.35}svg{display:block;flex-shrink:0}a{color:var(--violet-dark)}[hidden]{display:none!important}.skip-link{position:fixed;top:-80px;left:16px;z-index:100;background:#fff;padding:14px}.skip-link:focus{top:12px}.topbar{background:#fff;border-bottom:1px solid var(--line)}.topbar-inner{max-width:1280px;padding:22px 36px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px}.brand-symbol{width:36px;height:36px;display:grid;place-items:center;color:var(--violet);background:var(--violet-soft);border-radius:12px}.brand-name{font-size:13px;font-weight:800;letter-spacing:2px}.brand-sub{font-size:12px;color:var(--muted);letter-spacing:0}.text-btn{border:0;background:transparent;color:var(--muted);padding:9px 4px;display:inline-flex;align-items:center;gap:7px;min-height:40px}.text-btn:hover{color:var(--violet)}.layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:42px;max-width:1280px;margin:0 auto;padding:40px 36px 145px}.sidebar{align-self:start;position:sticky;top:24px;min-width:0}.side-title{font-size:11px;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);margin:5px 0 18px}.steps{display:grid;gap:8px}.step{display:flex;align-items:center;gap:12px;background:transparent;border:0;border-radius:13px;padding:13px 12px;text-align:left;color:#8d8795;font-weight:600;min-height:52px}.step span:first-child{display:grid;place-items:center;width:29px;height:29px;border:1px solid #ddd7e8;border-radius:50%;font-size:12px;flex-shrink:0;background:#fff}.step[aria-current=step]{background:var(--violet-soft);color:var(--violet-dark)}.step[aria-current=step] span:first-child{background:var(--violet);border-color:var(--violet);color:#fff}.step.done span:first-child{color:var(--violet);border-color:#d4c6ff;background:#f8f5ff}.side-tip{border-top:1px solid var(--line);padding-top:22px;margin-top:28px;color:var(--muted);font-size:12px;line-height:1.7}.side-tip strong{display:block;color:#61556f;font-size:13px;margin-bottom:6px}.main{min-width:0}.intro{margin-bottom:26px}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:1.8px;color:var(--violet);font-weight:750;margin-bottom:10px}.intro p{color:var(--muted);margin-top:11px;max-width:710px}.section{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;margin-top:18px;box-shadow:var(--shadow)}.section:first-child{margin-top:0}.section-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}.section-head .number{font-size:12px;color:var(--violet);font-weight:750;letter-spacing:.08em}.section-head h2{margin-top:3px}.section-head p{color:var(--muted);font-size:13px;margin-top:4px}.field{min-width:0;border:0;padding:0;margin:0}.field+.field{margin-top:23px}.field legend,.field-label{display:block;font-weight:650;font-size:14px;margin-bottom:10px;padding:0}.hint{color:var(--muted);font-size:12px;margin:7px 0 0;line-height:1.55}.choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.choices.two{grid-template-columns:repeat(2,minmax(0,1fr))}.choices.four{grid-template-columns:repeat(4,minmax(0,1fr))}.choice{border:1px solid #e3deeb;background:#fff;color:#51495c;padding:13px 14px;border-radius:12px;min-height:51px;text-align:left;display:flex;align-items:center;gap:9px;transition:border-color .15s,background .15s,box-shadow .15s;min-width:0}.choice:hover{border-color:#b8a0fa;background:#fcfbff}.choice[aria-pressed=true]{border-color:var(--violet);background:var(--violet-soft);color:#50329c;box-shadow:inset 0 0 0 .5px var(--violet)}.choice .label{display:block;font-size:13px;font-weight:600;line-height:1.35}.choice .sub{display:block;color:var(--muted);font-size:11px;margin-top:3px;line-height:1.35}.choice .mark{margin-left:auto;flex-shrink:0;width:16px;height:16px;border:1px solid #d8d1e3;border-radius:50%;display:grid;place-items:center;font-size:10px}.choice[aria-pressed=true] .mark{background:var(--violet);border-color:var(--violet);color:#fff}.choice.unknown{background:#faf9fc;color:var(--muted)}.choice.unknown[aria-pressed=true]{border-color:#afa1c4;background:#f0edf5;color:#625173;box-shadow:none}.choice.unknown[aria-pressed=true] .mark{background:#91809f;border-color:#91809f}.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.field-grid>.field{margin:0}.input,.select{display:block;width:100%;min-width:0;border:1px solid #ddd7e6;border-radius:11px;background:#fff;color:var(--ink);padding:12px 13px;min-height:47px}.input::placeholder{color:#a09aa8}.input:focus,.select:focus{border-color:var(--violet);outline:2px solid #e3d9ff;outline-offset:1px}.input:invalid:not(:placeholder-shown){border-color:#c65959}.notice{display:flex;gap:11px;border-radius:13px;background:var(--violet-soft);padding:14px 16px;font-size:13px;color:#655086;margin:15px 0 0;line-height:1.6}.notice svg{margin-top:3px}.notice.amber{background:var(--amber);color:var(--amber-ink)}.notice.green{background:var(--green-soft);color:var(--green)}.notice.subtle{background:#f6f5f8;color:var(--muted)}.conditional{padding:19px;background:#faf9fc;border:1px solid var(--line);border-radius:14px;margin-top:18px}.conditional .choices .choice{background:#fff}.conditional .choices .choice[aria-pressed=true]{background:var(--violet-soft)}.section-separator{height:1px;background:var(--line);margin:25px 0}.btn{border:0;padding:12px 21px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:47px;font-weight:650;font-size:14px;line-height:1.4;transition:background .15s,box-shadow .15s;max-width:100%}.btn-primary{background:var(--violet);color:#fff;box-shadow:0 5px 18px #7c54fe25}.btn-primary:hover{background:var(--violet-dark)}.btn-ghost{background:#f0edf5;color:#63596e}.btn-ghost:hover{background:#e8e2f1}.btn-outline{background:#fff;border:1px solid #d9cef4;color:var(--violet-dark)}.btn-outline:hover{background:#f8f5ff}.source-list{display:grid;gap:15px}.source-card{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);min-width:0}.source-card[open]{border-color:#d7c9fa}.source-summary{display:flex;align-items:center;gap:12px;list-style:none;padding:19px 20px;cursor:pointer;border-radius:17px;min-height:80px}.source-summary::-webkit-details-marker{display:none}.source-number{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--violet-soft);color:var(--violet);font-size:13px;font-weight:750;flex-shrink:0}.source-summary-copy{flex:1;min-width:0}.source-summary strong{font-size:14px;display:block;overflow-wrap:anywhere}.source-summary small{display:block;font-size:12px;color:var(--muted);margin-top:3px;overflow-wrap:anywhere}.source-chevron{color:#a096ac;transition:transform .18s}.source-card[open] .source-chevron{transform:rotate(180deg)}.icon-btn{border:0;background:transparent;color:#a195af;width:38px;height:38px;min-width:38px;border-radius:10px;display:grid;place-items:center}.icon-btn:hover{background:#f8edef;color:#b84e5e}.source-body{padding:0 22px 24px}.source-body>.field:first-child{padding-top:18px;border-top:1px solid var(--line)}.source-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 18px}.count-tag{background:#ebe4fc;color:#6a4aab;border-radius:99px;padding:5px 10px;font-size:12px;font-weight:650}.add-source{width:100%;margin-top:16px;background:#fcfbff;border:1px dashed #bda8f0;padding:17px}.optional{margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}.optional>summary{cursor:pointer;color:#81738f;font-size:12px;min-height:30px}.optional-body{padding-top:12px}.optional .field-grid+.field-grid{margin-top:14px}.optional label{font-size:12px;color:#72667f}.footer{position:fixed;left:0;right:0;bottom:0;z-index:30;border-top:1px solid #e8e2f0;background:#fffffff5;backdrop-filter:blur(12px);padding:15px 30px calc(15px + env(safe-area-inset-bottom,0px))}.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:1208px;margin:auto}.footer-status{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;min-width:0}.status-dot{width:6px;height:6px;border-radius:50%;background:#ab94de;flex-shrink:0}.footer-actions{display:flex;gap:10px}.footer .btn{min-width:115px}.progress-line{height:3px;background:#f0edf5;position:absolute;top:-3px;left:0;right:0}.progress-line i{display:block;height:3px;background:var(--violet);transition:width .2s}.summary-tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:18px}.tag{padding:5px 10px;border:1px solid #e5deef;background:#fff;border-radius:8px;font-size:12px;color:#71627f}.result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:22px 0}.result-option{background:#fff;border:1px solid var(--line);border-radius:17px;padding:18px;text-align:left;color:var(--ink);display:flex;flex-direction:column;gap:14px;min-width:0;position:relative}.result-option[aria-pressed=true]{border:2px solid var(--violet);padding:17px;background:linear-gradient(155deg,#fff,#f8f5ff);box-shadow:0 7px 24px #7c54fe0f}.rank{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:11px;gap:8px}.result-option[aria-pressed=true] .rank{color:var(--violet)}.select-dot{width:18px;height:18px;border-radius:50%;border:1px solid #d6cce5;display:grid;place-items:center;font-size:10px;flex-shrink:0}.result-option[aria-pressed=true] .select-dot{background:var(--violet);color:#fff;border-color:var(--violet)}.protocol-name{font-size:20px;font-weight:750;letter-spacing:-.5px;line-height:1.2;overflow-wrap:anywhere}.score{font-size:33px;letter-spacing:-1px;font-weight:650;line-height:1}.score small{font-size:17px;color:#aa9bba;margin-left:2px}.score-label{font-size:11px;color:var(--muted);margin-top:5px}.score-track{display:block;height:5px;background:#eae4f2;border-radius:6px;overflow:hidden;margin-top:11px}.score-track i{display:block;background:var(--violet);height:100%;border-radius:6px}.result-note{font-size:11px;color:#987421;line-height:1.45;margin-top:auto}.details-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}.details-head h2{font-size:26px;letter-spacing:-.6px;line-height:1.2}.pill{font-size:11px;padding:5px 10px;border-radius:99px;color:var(--violet-dark);background:var(--violet-soft);white-space:nowrap}.protocol-description{color:#716679;margin-top:15px;line-height:1.8;max-width:740px}.reason-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:22px 0 0}.reason{display:flex;gap:9px;font-size:13px;color:#62546e;padding:12px;background:#f8f6fc;border-radius:10px}.reason svg{color:var(--violet);margin-top:3px}.subsystem{margin-top:23px;padding-top:22px;border-top:1px solid var(--line)}.subsystem p{font-size:13px;color:#7b6b86;margin-top:6px;line-height:1.65}.list{padding-left:18px;margin:7px 0 0}.list li+li{margin-top:5px}.exclusions{margin-top:23px;font-size:13px;color:var(--muted)}.exclusions>summary{cursor:pointer;padding:12px 0;min-height:44px}.excluded{padding:12px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:108px minmax(0,1fr);gap:12px}.excluded strong{font-weight:650;color:#7f708d}.empty-result{padding:30px 26px;border-radius:20px;border:1px solid var(--line);background:#fff}.empty-symbol{width:52px;height:52px;border-radius:15px;background:var(--violet-soft);display:grid;place-items:center;color:var(--violet);margin-bottom:18px}.empty-result p{margin-top:12px;color:var(--muted)}.empty-result .btn{margin-top:20px}.result-tools{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.method-note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:16px}.confirmation{margin-top:20px;background:var(--green-soft);padding:20px;border:1px solid #d3e9dc;border-radius:16px;color:var(--green)}.confirmation h3{display:flex;align-items:center;gap:8px}.confirmation p{font-size:13px;line-height:1.65;margin-top:7px}.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:110px;z-index:50;background:#352544;color:#fff;padding:12px 18px;border-radius:12px;box-shadow:0 8px 30px #24113733;font-size:13px;max-width:calc(100% - 30px);width:max-content;text-align:center}.toast button{border:0;background:transparent;color:#d8c9ff;font-weight:650;padding:3px 5px;margin-left:7px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.intro h1:focus{outline:0}.controls-caption{margin-bottom:18px;color:var(--muted);font-size:13px}.result-grid.one{grid-template-columns:minmax(0,310px)}.result-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.small-muted{color:var(--muted);font-size:12px}
+@media(min-width:1000px){.footer-status{margin-left:252px}.result-grid.one{grid-template-columns:1fr}.result-grid.one .result-option{display:grid;grid-template-columns:1fr 160px;gap:12px 22px}.result-grid.one .rank{grid-column:1/-1}.result-grid.one .result-note{grid-column:1/-1}.result-grid.one .protocol-name{font-size:28px;align-self:center}}
+@media(max-width:999px){.layout{grid-template-columns:1fr;gap:25px;padding-top:22px}.sidebar{position:static}.side-title,.side-tip{display:none}.steps{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.step{justify-content:center;gap:8px;padding:9px 7px;font-size:12px}.intro{margin-bottom:23px}.topbar-inner{padding-top:17px;padding-bottom:17px}}
+@media(max-width:650px){body{font-size:14px}.topbar-inner{padding:15px 18px}.brand-name{font-size:12px}.brand-sub{font-size:11px}.topbar .text-btn{font-size:12px}.layout{padding:17px 16px 145px;gap:24px}.steps{gap:3px}.step{padding:8px 2px;min-height:59px;flex-direction:column;gap:5px;font-size:11px}.step span:first-child{width:25px;height:25px;font-size:11px}.intro p{font-size:13px;line-height:1.65}.eyebrow{font-size:10px}h1{letter-spacing:-.6px}.section{padding:20px 17px;border-radius:17px}.section-head{gap:10px}.section-head h2{font-size:18px}.choices,.choices.four{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.choice{padding:11px 10px;min-height:49px;gap:6px}.choice .label{font-size:12px}.choice .sub{font-size:10px}.choice .mark{width:15px;height:15px}.field legend,.field-label{font-size:13px}.conditional{padding:14px 12px}.field-grid{gap:12px}.source-body{padding:0 16px 20px}.source-summary{padding:16px 14px;gap:9px}.source-summary strong{font-size:13px}.source-summary small{font-size:11px}.source-number{width:32px;height:32px}.icon-btn{width:32px;min-width:32px}.source-meta h2{font-size:18px}.source-meta .small-muted{display:none}.input,.select{font-size:16px;padding:11px 10px}.footer{padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px))}.footer-inner{gap:8px;display:block}.footer-status{font-size:10px;margin:0 0 8px}.footer-actions{width:100%}.footer-actions .btn{min-width:0;padding:11px 14px}.footer-actions .btn-primary{flex:1}.footer-actions .btn-ghost{min-width:86px}.result-grid,.result-grid.two,.result-grid.one{grid-template-columns:1fr;gap:10px}.result-option{display:grid;grid-template-columns:minmax(0,1fr) 108px;gap:10px 13px;padding:16px}.result-option[aria-pressed=true]{padding:15px}.rank{grid-column:1/-1}.protocol-name{font-size:22px;align-self:center}.score{font-size:30px}.score-label{font-size:10px}.result-note{grid-column:1/-1}.details-head{display:block}.details-head h2{font-size:23px}.details-head .pill{display:inline-block;margin-top:12px}.reason-grid{grid-template-columns:1fr}.protocol-description{font-size:13px;line-height:1.75}.notice{font-size:12px;padding:12px}.excluded{grid-template-columns:85px minmax(0,1fr);gap:8px;font-size:12px}.toast{bottom:121px}.btn{font-size:13px}.result-tools .btn{flex:1}.empty-result{padding:25px 20px}}
+@media(max-width:360px){.layout{padding-left:12px;padding-right:12px}.section{padding:18px 14px}.field-grid{grid-template-columns:1fr}.brand-symbol{display:none}.brand{gap:8px}}
+@media(max-height:450px){.footer-status{display:none}.footer{padding-top:8px;padding-bottom:8px}.layout{padding-bottom:100px}.sidebar{top:10px}.toast{bottom:78px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
+@media print{.topbar .text-btn,.sidebar,.footer,.result-tools,.exclusions,.skip-link{display:none!important}.layout{display:block;padding:20px}.section,.result-option{break-inside:avoid;box-shadow:none}.result-grid{display:grid;grid-template-columns:repeat(3,1fr)}body{background:#fff}.confirmation{break-inside:avoid}}
+.maytoni-logo{display:block;width:150px;height:auto;flex-shrink:0}.brand-sub{max-width:130px}.equipment-source-head{display:flex;align-items:flex-start;gap:14px}.equipment-source-head h2{font-size:18px;overflow-wrap:anywhere}.equipment-source-head .small-muted{margin-top:5px}.equipment-parameters{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}.equipment-parameters>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;list-style:none;color:var(--violet-dark);font-size:14px;font-weight:650;min-height:44px}.equipment-parameters>summary::-webkit-details-marker{display:none}.equipment-fields{padding-top:16px}.equipment-fields .field-grid{row-gap:20px}.equipment-questions{margin-top:22px}.calculated-load{padding:12px 14px;margin:14px 0 0;background:var(--violet-soft);color:var(--violet-dark);border-radius:10px;font-size:13px}.equipment-package{margin-top:22px;border:1px solid var(--line);border-radius:14px;overflow:hidden}.equipment-package>h3{padding:14px 18px;background:#f7f5fb;font-size:15px}.equipment-item{padding:18px;border-top:1px solid var(--line)}.equipment-item:first-child{border-top:0}.equipment-item h4{margin:0 0 10px;font-size:15px;font-weight:650}.maytoni-label{font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin:12px 0 8px}.sku-option{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:6px}.sku{display:inline-block;background:var(--violet-soft);color:var(--violet-dark);border-radius:7px;padding:4px 9px;font-size:13px;font-weight:750;overflow-wrap:anywhere;max-width:100%}.sku-spec{font-size:12px;color:#74667f}.equipment-note,.equipment-pending{font-size:12px;margin-top:10px;line-height:1.6;overflow-wrap:anywhere}.equipment-note{color:var(--muted)}.equipment-pending{color:var(--amber-ink)}.equipment-package>.equipment-pending{padding:0 18px 12px}.filtered-products{margin-top:12px;font-size:11px;color:var(--muted)}.filtered-products summary{cursor:pointer}.filtered-products p{margin-top:7px}.export-box{display:flex;justify-content:space-between;gap:20px;align-items:center}.method-note p+p{margin-top:9px}.field-grid>.field{margin:0}.steps .step:disabled{opacity:.5}
+@media(max-width:999px){.steps{grid-template-columns:repeat(6,minmax(0,1fr))}.step{flex-direction:column;font-size:11px;gap:5px}.footer-status{max-width:38%}}
+@media(max-width:650px){.brand{gap:10px}.maytoni-logo{width:120px}.brand-sub{display:none}.steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.step{min-height:49px;flex-direction:row;font-size:11px}.step span:first-child{width:22px;height:22px}.footer-status{max-width:none}.equipment-source-head h2{font-size:16px}.equipment-item{padding:15px}.equipment-package>h3{padding:13px 15px}.export-box{display:block}.export-box .btn{width:100%;margin-top:16px}.equipment-fields .field-grid{grid-template-columns:1fr}.equipment-parameters>summary{font-size:13px}.footer .btn{min-width:0}.footer-actions .btn-primary{overflow-wrap:anywhere}}
+@media print{.equipment-parameters{display:block}.equipment-package{break-inside:avoid}.maytoni-logo{width:140px}}
+
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Перейти к форме</a>
+<header class="topbar"><div class="topbar-inner"><div class="brand"><img class="maytoni-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKgAAAAuCAIAAAAzwMUmAAAJy0lEQVR4AeyZB4gVSRPHb40YMayYc87ZNaGCAUVFzAlzThjXfNypp5hzzhGzrii4gugn5ozKitk1gTkHjN/3g2Lr63tv3uy+cG/3dmcoiv/U1HT3dHVX6En2X+dKkjOQ7DfnSpIz4Bg+SZr9t98cwzuGT6IzkEQ/29nxjuGT6Az8yz776dOnY8aMad68+ezZs79+/erz6J0d7/PUxcOL3759q1279syZMw8cOBAeHt69e3efB+Gr4X3u0HnRjxm4dOnS3bt3tYGDBw8q9hY4hvd2xuJTP0eOHGb3mTJlMm+9wo7hvZqueFYuUKAA0V0HMWjQIMXeAsfw3s5YPOtHREQQ4GfNmnX+/HnCvM+jcQzv89TFz4vJkiVr2rTpqFGjqlSp4s8IfDH8nzHX4cOHY+2b8uP3mOvZs2f2+o8fP45p+8/FixdbKpPgqA5r31JHhBs3blTNBw8eIDQl+sgGfP78mbdc6OfPn3v37u3fv39YWFhoaGi6dOlKly7doUOHVatWvXv3zkXZvL148aL29fbtW/ORib98+aJqt2/fNh+Br1y5EjOdv9+/fx+Jb+SL4SfFXK1bt3706JF9xxj7r5jr+fPn9spLly6NaXvSkCFD7ty5465fokSJlStXilqnTp1YWO46SK5du0a1I2q4x3z58iHcsGGDSOLI3Q1/4sSJ8uXLt2rVasWKFefOnXv16hU6169f3759e9++fYsWLUoXdGRJGF777dixo6UOQhpUNXfD810x0/lXdHQ0+r6RL4bXnt6/f8/U//r1SyUm4G/n9+/fTYk9/vHjBxY1dVgH5q3gtGnTEuEEf/jwYfjw4YJNTtc9e/aEi5BmQ0JCBPvDFy5cWK9evaioKE+NvHjxgtVG13yLJx2RR0ZGzpgxQ3C8cL8Mz4jZAVOnTgW407x58zCMi9zmdvfu3WwgU2HNmjWWh1OdO3euVq2aaG7btu3UqVOCleN1L1y4ILc9evRQ5W7duv3x96tcuXKiBh8xYsTfH/7BIkMuhIMdOnQofl5uheNIaCF58uRyK3zdunVt2rSJ1fYTJ048efKkvBJ87q/hGTEBibgLMOnGjRvjxo0zJbHiZcuWuejgUbCri1BuzU3MDjNdC+GTQ01Ry5Ahg7mxunbtymhNwmyiCR85cqT5CKyGJznAwaIjVLlyZZbp69evSR0Iujjn48eP4//lKXzfvn0sI4ANsTKIlS5r3UY/sI8CYHhcfdu2bT99+qQj45Pat2/P+aJKYgWE82PHjolar169UqdOLZhQKsCFE2gHDBggwps3b86dO1cwnIwX2wMgrJUtWzaAP4TXGT9+vLbQpUuXM2fOYObMmTOLMFWqVJykshTI+EQCX7Jkyb179wA2RALE1GlIstEM+CO/DM/ClwHxheRiguGTJk26evUqICQkrpFVc/iQkBD8LUkyr0OnT5/2FFMxqk49PUqWh4cnQPAiVLJkSX+OOGhBaP/+/U+ePBFMm7SfIkUKuXXhixYtqlmzpgjZD7glwcL5NAEs6zJlygg+evSo6ZMQUrDBhfQVuQ0g98vww4YNq1u3royGwLZz504wueu0adMAUBzXMluK19GHmjRpkjdv3oEDB4KFmE0BLhyr65RRArHy6A63r2rMu0v01UdeAbNoJH6lTJnS0+ssCDNgmS+ar2DaPXv2aByZMGGCGexZMarMFykOLPDL8Axly5YtemJMPYPHbteunQ7dZo54V4lGCOdyK3uUdKxSpUoi2bRpE0FUsAvv3bu3ep1du3aR9FHtiA71Eu5XsJ/88uXL0gIunaxNsCdO0kAYkqf4KlakYBdO4UcsECHTFfxg76/hc+fOvXbtWvkAImvFihVx+3I7duxYcivB9nz58uWiwF5nxwuWFQDG6uRWAHfCE5ol39atW0WHzTRnzhzB/vOXL19KIwULFkyTJo1gG86q1ac6G0h0+wqg8NOIFvxg76/h+Z6WLVtSMgGgjx8/wiFWwJQpUwCxEtuCY2dRw11jS8Fs34wZMwrWDEBuTc4sU6SZEjClV86cOQEBIfVbCuybzZo1qyq4lH8qF0C6wH8XwQT76dOnCw4CD4DhGSVhuFChQgAhTjFJcQl4cmvP58+fLwqkPP369RMM55b0HgBFRUWR5QEsifMc07UULlyYwsxS0zdhrly55MWHDx8KsOfR0dGqgEdU7A7wTJz+EkHkUTAr+8AYHkuT2ZGzyAewDvCKgu05h9sEeNFhjqjKqJ6V3rx5I4/gnuo6HlGwcbQCEKIoiOPWFP1YuWYbJCKkrvb6nCgcOnRIdPLnz5/V2P0idOEVKlTQqCTBnuMB1VH/p5JAgcAYntEwOxgMQJ6inp9beyJx0/SHcEhVZtL69ev1dU5ymHe9dQFZsmRRCdm+4oAA/oZpOwxPsSXgWFfXq/nvHGXdGC61xuDBg1u0aIECRLA3Z+9fYHgGTVnCcYQWZkhipQULFsSqIwqUfKtXrxYcZN6oUaOyZctKp9T0nAcLduf8ttGjHkKVy38ENrS84h74WeJ58uSRp55KO3kaKB6wHc+AWNE7duwwwy1CG+Kcn/JPFHAYHAlYEoFQdGy8vSj8Q5wNypEAXyftczxHXBNscs6OGjdurOeVkydPNvMeU9MdUxKTFWkX7goBlwTS8N4OTisxsnd+tPzHw6V13a1bt44cOeJtLwHRr169OomLNMXG5ayCYp0Ukp+wZGec6tSpU6dq1arq5PF8o0ePFv04csqTONZBcWzQXi3eDM/PCd03ZO84Rk8DDQ8P1wLBPBfzpP8PyTlMJH6z+6V9zqRJRanFObSnDOMnjcjhFKKbN28GeEssoPr163v7lm/68WZ4Ajb/cmTQzKkAS07SrpV6REQEK8ZSLQhCjhlwOcWLF/fUFzk8QQGra4XmSdNSTipHDhsaGmr5NLBCXwyvkTh79uyxjiZ9+vS4QSGw6uO3pR1q9yJFiqjcEuA2RblWrVr6E8/U5MhPFODM/v8fxYZKlSrFK0I2Xkeb4UM4ccJX9enTB+dMNUEKQiOcwWFyUhbkquwCOA+QjuAuj/QWq3P+iIKQ+7cw54xBiMxAX/QW+GJ4jcUNGzaMtT+OUzCVkFncc2gl7eh5rU1TxYoVE2U4rtVdkyN0HgnVqFHDXcGTBO8qb8HdZ9nyLbw93WHms2fP4n74H81SwFqY3N4SzZo1oxcoMjLSsmURNmjQAB2hsLAwESpnzmUy4RyPqtxb4Ivhve3D0U+AM+AYPgEaJRhDcgwfjFlOgH04hk+ARgnGkBzDB2OWE2AfjuEToFGCMSTH8NaznOiljuETvYmtP9AxvPW8JHqpY/hEb2LrD3QMbz0viV7qGD7Rm9j6A/8HAAD//zBSUzAAAAAGSURBVAMAfR+FvyVnNXEAAAAASUVORK5CYII=" alt="Maytoni" width="168" height="46"><span class="brand-sub">Управление освещением</span></div><button class="text-btn" id="reset" type="button">Начать заново <span aria-hidden="true">↻</span></button></div></header>
+<div class="layout"><aside class="sidebar"><div class="side-title">Ваш проект</div><nav class="steps" id="steps" aria-label="Шаги конфигуратора"></nav><div class="side-tip"><strong>От задачи к решению</strong>Укажите то, что уже знаете. Неизвестные параметры можно уточнить позже.<br><br>Сначала выберем подходящий метод управления.</div></aside><main class="main" id="main"><div class="intro"><div class="eyebrow" id="eyebrow"></div><h1 id="title" tabindex="-1"></h1><p id="subtitle"></p></div><div id="page"></div></main></div>
+<footer class="footer"><div class="progress-line" aria-hidden="true"><i id="progressBar"></i></div><div class="footer-inner"><div class="footer-status"><span class="status-dot"></span><span id="saveStatus">Черновик сохраняется в этом браузере</span></div><div class="footer-actions"><button class="btn btn-ghost" id="back" type="button">Назад</button><button class="btn btn-primary" id="next" type="button">Далее <span aria-hidden="true">→</span></button></div></div></footer>
+<div id="toast" class="toast" role="status" hidden></div>
+<noscript><div class="section" style="margin:20px">Для работы конфигуратора включите JavaScript в браузере.</div></noscript>
+<script>
+'use strict';
+(() => {
+const VERSION=3, STORAGE='maytoni-control-configurator-v3';
+const $=s=>document.querySelector(s), esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const icon=(name,size=18)=>{const paths={check:'<path d="m5 12 4 4L19 6"/>',info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v1"/>',plus:'<path d="M12 5v14M5 12h14"/>',down:'<path d="m6 9 6 6 6-6"/>',trash:'<path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 10v7m4-7v7"/>',arrow:'<path d="M4 12h15m-6-6 6 6-6 6"/>',spark:'<path d="m12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4Z"/>',copy:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/>'};return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]||paths.info}</svg>`;};
+const OPTIONS={
+ object:[['room','Одна комната'],['apartment','Квартира'],['house','Частный дом'],['office','Офис'],['restaurant','Ресторан / кафе'],['retail','Магазин'],['hotel','Отель'],['commercial','Другой объект'],['unknown','Пока не знаю']],
+ groups:[['1','1 группа'],['2-5','2–5 групп'],['6-10','6–10 групп'],['11-30','11–30 групп'],['31+','Больше 30'],['unknown','Пока не знаю']],
+ budget:[['low','Минимальный'],['medium','Средний'],['high','Выше среднего'],['unknown','Пока не определился']],
+ stage:[['before','До чистовой отделки'],['finished','Отделка завершена'],['unknown','Пока не знаю']],
+ bus:[['existing','Шина DALI уже есть'],['approved','Можно проложить','Заказчик готов к работам'],['no','Прокладка исключена'],['unknown','Пока не знаю']],
+ internet:[['yes','Есть'],['no','Нет']],
+ controls:[['wall','Настенная панель / клавиша'],['remote','Пульт'],['phone','Смартфон'],['voice','Голосовой помощник'],['unknown','Пока не знаю']],
+ priority:[['wall','Настенное управление'],['digital','Смартфон / голос'],['equal','Одинаково важны'],['unknown','Пока не знаю']],
+ extras:[['scenes','Сцены','Сохранённые состояния света'],['automation','Расписания и автоматизация'],['integration','Интеграция в умный дом'],['none','Ничего из перечисленного'],['unknown','Пока не знаю']],
+ scenes:[['1-5','1–5 сцен'],['6+','Больше 5'],['unknown','Пока не знаю']],
+ spiControl:[['remote','С пульта'],['phone','Со смартфона'],['unknown','Пока не знаю']],
+ rfCompatible:[['yes','Да, подтверждена'],['no','Нет'],['unknown','Не знаю']],
+ phaseDim:[['yes','Да'],['no','Нет'],['unknown','Не знаю']],
+ sync:[['yes','Да'],['no','Нет'],['unknown','Не знаю']],
+ neutral:[['yes','Есть'],['no','Нет'],['unknown','Не знаю']],
+ features:[['onoff','Вкл. / выкл.'],['dim','Яркость'],['cct','Тёплый / холодный белый'],['rgb','Цвет RGB'],['effects','Динамические эффекты'],['unknown','Пока не знаю']]
+};
+const TYPES=[['unknown','Выберите тип / пока не знаю','unknown'],['lamp','Светильник под лампу 230 В','fixture'],['led_integrated','LED-светильник со встроенным драйвером (нельзя заменить)','fixture'],['led_external','LED-светильник с внешним драйвером','fixture'],['track230','Трековая система 230 В','fixture'],['track24','Трековая система 24 В','fixture'],['track48','Трековая система 48 В','fixture'],['lowv','Светильник 12–24 В, совместимый с ШИМ','fixture'],['strip_mono','Монохромная LED-лента 12–48 В','strip'],['strip_cct','LED-лента MIX / CCT 12–48 В','strip'],['strip_rgb','LED-лента RGB 12–48 В','strip'],['strip_rgbw','LED-лента RGBW 12–48 В','strip'],['strip_rgbcct','LED-лента RGB+MIX 12–48 В','strip'],['strip_spi','SPI-лента 12–24 В','spi']];
+const proto={
+ TRIAC:{title:'TRIAC',description:'Простое управление яркостью светильников и монохромных лент. Команды передаются по линии питания, поэтому отдельная шина управления не нужна. Можно использовать настенную панель и синхронизированный с ней пульт. Источник света, драйвер или блок питания должен поддерживать TRIAC-диммирование.'},
+ DALI:{title:'DALI',description:'Проводная система для управления группами света и сохранёнными сценами. Позволяет менять яркость, цветовую температуру и цвет при использовании совместимого оборудования. Основной способ управления — настенные панели, а приложение, пульт и голос можно добавить через соответствующие интерфейсы. Для работы необходима отдельная шина DALI.'},
+ WIFI:{title:'Wi-Fi',description:'Управление освещением через приложение или голосового помощника — по вашему выбору. Подходит для комнат, квартир и проектов с количеством групп до десяти в рамках этого подбора. Поддерживает группы, сцены и автоматизацию, а возможности каждого источника определяет управляющее устройство. Для этого решения нужен стабильный интернет.'},
+ ZIGBEE:{title:'ZigBee',description:'Беспроводная система для управления освещением со смартфона или голосом. Подходит для более масштабных проектов, нескольких помещений и большого числа групп. Позволяет объединять совместимые источники в группы, создавать сцены и автоматизацию. Для решения с приложением или голосом предусматриваются хаб и стабильный интернет.'},
+ RF:{title:'RF ШИМ',description:'Локальное беспроводное управление совместимыми лентами и светильниками постоянного напряжения 12–48 В. Пульт или настенная панель передаёт команду, а контроллер регулирует параметры света. В этом подборе предусмотрено до пяти групп и до пяти сохраняемых сцен. Интернет для местного управления не требуется.'},
+ SPI:{title:'SPI',description:'Управление адресной лентой для создания динамических световых эффектов. Контроллер задаёт поведение отдельных участков или пикселей ленты. Управлять подсветкой можно с пульта, а со смартфона — при использовании Wi-Fi–SPI-контроллера. SPI-подсветка может работать отдельной подсистемой рядом с основным освещением.'},
+ SWITCH:{title:'Обычный выключатель',description:'Для этой задачи достаточно обычного включения и выключения света с настенной клавиши. Отдельный протокол автоматизации не требуется. При необходимости независимого включения нескольких групп для них предусматриваются отдельные линии. Светодиодной ленте по-прежнему нужно подходящее питание.'}
+};
+let sequence=0;
+function newSource(){return {id:'s'+Date.now().toString(36)+(++sequence),type:'unknown',name:'',features:['unknown'],quantity:'',voltage:'',length:'',power:'',current:'',vmin:'',vmax:'',chip:'',load:'',unitPower:'',units:'',phaseDim:'unknown',neutral:'unknown',sync:'unknown',paramsOpen:false,rfCompatible:'unknown',spiControl:'unknown',open:true};}
+function defaults(){return {version:VERSION,step:0,object:'unknown',groups:'unknown',budget:'unknown',stage:'unknown',bus:'unknown',internet:'',equipment:'new',controls:['unknown'],priority:'unknown',extras:['unknown'],scenes:'unknown',sources:[newSource()],selected:null,confirmed:false};}
+const label=(k,v)=>OPTIONS[k]?.find(x=>x[0]===v)?.[1]||'Пока не знаю';
+const typeInfo=s=>TYPES.find(x=>x[0]===s.type)||TYPES[0];
+const typeName=s=>typeInfo(s)[1];
+const isSPI=s=>s.type==='strip_spi', isFixture=s=>typeInfo(s)[2]==='fixture';
+const known=v=>v!==''&&v!==undefined&&v!==null&&v!=='unknown';
+const numeric=v=>v!==''&&v!=null&&Number.isFinite(Number(v))&&Number(v)>0?Number(v):null;
+function validFeatures(type){if(type==='strip_mono')return ['onoff','dim','unknown'];if(type==='strip_cct')return ['onoff','dim','cct','unknown'];if(['strip_rgb','strip_rgbw'].includes(type))return ['onoff','dim','rgb','unknown'];if(type==='strip_rgbcct')return ['onoff','dim','cct','rgb','unknown'];if(type==='strip_spi')return ['onoff','dim','rgb','effects','unknown'];return ['onoff','dim','cct','rgb','unknown'];}
+function normalize(raw){
+ const s=defaults();if(!raw||typeof raw!=='object')return s;
+ for(const k of ['object','groups','budget','stage','bus','internet','priority','scenes'])if(OPTIONS[k].some(o=>o[0]===raw[k]))s[k]=raw[k];
+ for(const k of ['controls','extras']){const a=Array.isArray(raw[k])?[...new Set(raw[k].filter(v=>OPTIONS[k].some(o=>o[0]===v)))]:[];s[k]=a.includes('unknown')?['unknown']:a.includes('none')?['none']:a.length?a:['unknown'];}
+ if(Array.isArray(raw.sources)&&raw.sources.length){const ids=new Set();s.sources=raw.sources.filter(x=>x&&typeof x==='object').map(x=>{
+  const a=newSource();a.type=TYPES.some(t=>t[0]===x.type)?x.type:'unknown';
+  if(raw.version===2&&x.type==='track48')a.type=numeric(x.voltage)===24?'track24':numeric(x.voltage)===48?'track48':'unknown';
+  if(/^[a-z0-9_-]{1,50}$/i.test(x.id||'')&&!ids.has(x.id))a.id=x.id;ids.add(a.id);
+  a.name=String(x.name||'').slice(0,60);
+  for(const k of ['quantity','voltage','length','power','current','vmin','vmax','load','unitPower','units'])a[k]=x[k]===undefined||x[k]===null?'':String(x[k]).slice(0,12);
+  a.chip=String(x.chip||'').slice(0,60);
+  const f=Array.isArray(x.features)?[...new Set(x.features.filter(v=>validFeatures(a.type).includes(v)))]:[];a.features=f.includes('unknown')?['unknown']:f.length?f:['unknown'];
+  for(const k of ['rfCompatible','spiControl','phaseDim','neutral','sync'])if(OPTIONS[k].some(o=>o[0]===x[k]))a[k]=x[k];
+  a.open=x.open!==false;a.paramsOpen=x.paramsOpen===true;return a;
+ });if(!s.sources.length)s.sources=[newSource()];}
+ s.step=Number.isInteger(raw.step)?Math.max(0,Math.min(5,raw.step)):0;s.selected=Object.hasOwn(proto,raw.selected)?raw.selected:null;s.confirmed=raw.version===VERSION&&raw.confirmed===true;
+ if(s.step>3&&!s.confirmed)s.step=3;return s;
+}
+
+
+/* Decision engine. Hard constraints are evaluated before the score.
+   The provisional scoring model is separate from constraints: 70% confirmed
+   requirements, 30% preferences (object/scale/budget/installation/control).
+   An unknown requirement is never treated as a refusal or as a confirmed match.
+   The matrix dated 29.09.2026 remains the source of the hard rules. */
+function evaluate(raw){
+ const s=normalize(raw), base=s.sources.filter(x=>!isSPI(x)), spi=s.sources.filter(isSPI), controls=s.controls.filter(x=>x!=='unknown'), digital=controls.some(x=>['phone','voice'].includes(x)), local=controls.some(x=>['wall','remote'].includes(x)), controlsKnown=!s.controls.includes('unknown'), extraKnown=!s.extras.includes('unknown'), extras=new Set(s.extras), hasScenes=extras.has('scenes'), advanced=extras.has('automation')||extras.has('integration'), groupMax=({'1':1,'2-5':5,'6-10':10,'11-30':30,'31+':Infinity})[s.groups], internetOK=s.internet==='yes', functionsKnown=base.every(x=>!x.features.includes('unknown')), allTypesKnown=base.every(x=>known(x.type)), funcs=new Set(base.flatMap(x=>x.features.filter(f=>f!=='unknown'))), requestedComplex=funcs.has('cct')||funcs.has('rgb')||funcs.has('effects');
+ const infoKnown=s.sources.some(x=>known(x.type)||!x.features.includes('unknown'));
+ const functionInfo=s.sources.some(x=>!x.features.includes('unknown'));
+ const output={candidates:[],excluded:[],all:[],insufficient:!infoKnown||!functionInfo,spiCount:spi.length,baseCount:base.length,summary:s};
+ if(output.insufficient)return output;
+ function candidate(id){const result={id,title:proto[id].title,checks:[],fail:[],pending:[],reasons:[],notices:[],score:0,spi:spi.length>0&&id!=='SPI',spiModes:[...new Set(spi.map(x=>x.spiControl))]};
+  const check=(condition,yes,no,unknown)=>{const status=condition===true?'pass':condition===false?'fail':'unknown';result.checks.push({status,label:yes,detail:status==='unknown'?unknown:status==='fail'?no:null});if(status==='fail')result.fail.push(no);if(status==='unknown')result.pending.push(unknown);};
+  if(id!=='SPI'){
+   check(base.length?true:false,'Есть источники основного освещения','Этот метод не используется как основной для отдельной SPI-ленты.','Уточните источники основного освещения.');
+   check(allTypesKnown?true:null,'Типы источников указаны','Тип источника не подходит.','Уточните тип каждого источника основного света.');
+   check(functionsKnown?true:null,'Нужные функции указаны','Функции источников не подходят.','Уточните функции источников с ответом «Пока не знаю».');
+   check(controlsKnown?true:null,'Способ управления выбран','Не выбран способ управления.','Уточните, как управлять основным освещением.');
+  }
+  if(id!=='SPI')for(const src of base){const fit=matrixSupport(id,src);if(!fit.ok)check(false,'Есть оборудование для выбранных функций',fit.reason,'Уточните функции.');}
+  if(id==='TRIAC'){
+   check(funcs.has('dim')?true:functionsKnown?false:null,'Нужна регулировка яркости','Для простого включения и выключения TRIAC не требуется.','Уточните, требуется ли регулировка яркости.');
+   check(requestedComplex?false:true,'Без регулирования цвета','TRIAC в этом подборе регулирует только яркость.','Уточните параметры света.');
+   check(base.some(x=>['strip_cct','strip_rgb','strip_rgbw','strip_rgbcct'].includes(x.type))?false:allTypesKnown?true:null,'Светильники или монохромные ленты','Для цветных и MIX-лент выберите другой метод.','Уточните, есть ли цветные или MIX-ленты.');
+   const fixtures=base.filter(isFixture);check(fixtures.some(x=>numeric(x.quantity)>15)?false:fixtures.some(x=>numeric(x.quantity)===null)?null:true,'Не более 15 светильников в группе','В одной из групп больше 15 светильников — TRIAC исключён по правилам подбора.','Уточните максимальное число светильников в одной группе.');
+   check(controlsKnown?!digital&&local:null,'Настенная панель или пульт','Для TRIAC выберите местное управление с панели или пульта.','Уточните способ местного управления.');
+   check(extraKnown?!hasScenes&&!advanced:null,'Не требуются сцены и умный дом','TRIAC в этом подборе не покрывает сцены, автоматизацию или интеграцию.','Уточните, нужны ли сцены, автоматизация и интеграция.');
+   if(funcs.has('dim'))result.reasons.push('Требуется регулировка яркости');if(controlsKnown&&!digital&&local)result.reasons.push('Подходит местное управление');if(controls.includes('remote'))result.notices.push('Пульт работает через совместимую настенную панель, синхронизированную с ним.');
+  }
+  if(id==='DALI'){
+   check(known(s.object)?s.object!=='room':null,'Объект больше одной комнаты','Для одной комнаты DALI не предлагается.','Уточните объект.');
+   check(known(s.bus)?['existing','approved'].includes(s.bus):null,'Шина есть или прокладка согласована','Шины DALI нет, а прокладка невозможна или не согласована.','Подтвердите наличие шины DALI либо готовность заказчика к её прокладке.');
+   if(s.stage==='finished'&&s.bus==='approved')result.notices.push('Потребуется прокладка шины DALI. При готовой отделке возможны дополнительные монтажные и восстановительные работы.');
+   if(['existing','approved'].includes(s.bus))result.reasons.push(s.bus==='existing'?'Шина DALI уже предусмотрена':'Прокладка шины согласована');if(hasScenes)result.reasons.push('Нужны сохраняемые сцены');if(controls.includes('wall'))result.reasons.push('Выбрано настенное управление');if(digital)result.notices.push('Для приложения и голоса нужен соответствующий интерфейс. Его совместимость уточняется при подборе оборудования.');
+   if(digital&&s.internet==='no')result.pending.push('Подтвердите, что выбранный интерфейс приложения или голоса работает без интернета. Само локальное управление DALI интернета не требует.');
+  }
+  if(id==='WIFI'||id==='ZIGBEE'){
+   check(controlsKnown?digital:null,'Нужен смартфон или голос','Смартфон и голос не выбраны — этот вариант не предлагается.','Уточните, нужен ли смартфон или голос.');
+   check(known(s.internet)?internetOK:null,'Есть стабильный интернет','Нет стабильного интернета.','Подтвердите наличие стабильного интернета.');
+   if(id==='WIFI')check(groupMax===undefined?null:groupMax<=10,'Не более 10 групп','Для Wi-Fi в этом подборе допускается не более 10 групп.','Уточните число независимо управляемых групп: для Wi-Fi максимум 10.');
+   if(digital)result.reasons.push('Нужно управление со смартфона или голосом');if(internetOK)result.reasons.push('Есть стабильный интернет');if(s.stage==='finished')result.reasons.push('Подходит для готовой отделки');if(id==='ZIGBEE'&&groupMax>10)result.reasons.push('Подходит для большого числа групп');
+  }
+  if(id==='RF'){
+   let incompatible=false, uncertain=false;for(const x of base){if(x.type==='unknown'){uncertain=true;continue;}if(x.type==='track24'){if(x.rfCompatible==='no')incompatible=true;else if(x.rfCompatible!=='yes')uncertain=true;}else if(!(x.type.startsWith('strip_')||x.type==='lowv'))incompatible=true;const v=numeric(x.voltage);if(v!==null&&(v<12||v>48))incompatible=true;}
+   check(incompatible?false:uncertain?null:true,'Совместимая нагрузка 12–48 В','RF ШИМ подходит только для лент и ШИМ-совместимых светильников 12–48 В.','Подтвердите тип нагрузки и совместимость треков с ШИМ.');
+   check(groupMax===undefined?null:groupMax<=5,'Не более 5 групп','Для RF ШИМ допускается не более 5 групп.','Уточните число групп: для RF ШИМ максимум 5.');
+   check(!extraKnown?null:!hasScenes?true:s.scenes==='1-5'?true:s.scenes==='6+'?false:null,'Не более 5 сцен','Для RF ШИМ допускается не более 5 сохраняемых сцен.','Уточните число сцен: для RF ШИМ максимум 5.');
+   check(controlsKnown?!digital&&local:null,'Пульт или настенная панель','RF ШИМ в этом подборе управляется с пульта или панели, без приложения и голоса.','Уточните способ местного управления.');
+   check(extraKnown?!advanced:null,'Без автоматизации и интеграции','RF ШИМ не покрывает выбранную автоматизацию или интеграцию в умный дом.','Уточните, нужна ли автоматизация или интеграция.');
+   if(!incompatible&&!uncertain)result.reasons.push('Управление совместимым светом 12–48 В');if(controlsKnown&&!digital&&local)result.reasons.push('Пульт или настенная панель');
+  }
+  if(id==='SWITCH'){
+   check(functionsKnown?base.every(x=>x.features.length>0&&x.features.every(f=>f==='onoff')):null,'Только включение и выключение','Обычный выключатель не регулирует яркость, цвет или цветовую температуру.','Уточните, достаточно ли только включения и выключения.');
+   check(controlsKnown?controls.includes('wall')&&controls.every(x=>x==='wall'):null,'Настенная клавиша','Для пульта, приложения или голоса нужен другой способ управления.','Уточните, достаточно ли настенной клавиши.');
+   check(extraKnown?!hasScenes&&!advanced:null,'Без сцен и автоматизации','Обычный выключатель не обеспечивает сцены, автоматизацию или интеграцию.','Уточните дополнительные функции.');
+   if(functionsKnown&&base.every(x=>x.features.every(f=>f==='onoff')))result.reasons.push('Нужно только включать и выключать свет');if(extraKnown&&!hasScenes&&!advanced)result.reasons.push('Не требуется автоматизация');
+  }
+  // The SPI branch has its own controls; the project controls apply to the base light.
+  if(spi.length){
+   for(const x of spi){const name=x.name||'SPI-подсветка';check(x.features.includes('unknown')?null:x.features.includes('effects'),'Для SPI нужна динамика',`${name}: не отмечены динамические эффекты — критерий подбора SPI не выполнен.`,`${name}: уточните, нужны ли динамические эффекты.`);check(known(x.spiControl)?true:null,'Способ управления SPI выбран','Способ управления SPI не подходит.',`${name}: выберите пульт или смартфон.`);if(x.spiControl==='phone')check(known(s.internet)?internetOK:null,'Интернет для Wi-Fi–SPI',`${name}: для управления со смартфона подтвердите наличие интернета.`,`${name}: подтвердите интернет для Wi-Fi–SPI-контроллера.`);}
+   if(id==='SPI'){result.title=spi.some(x=>x.spiControl==='phone')?'Wi-Fi + SPI':'SPI';result.reasons.push('Выбрана адресная SPI-лента');if(spi.every(x=>x.features.includes('effects')))result.reasons.push('Нужны динамические эффекты');if(spi.every(x=>x.spiControl==='remote'))result.reasons.push('Управление с пульта');if(spi.some(x=>x.spiControl==='phone'))result.reasons.push('Смартфон через Wi-Fi–SPI-контроллер');if(extraKnown&&(hasScenes||advanced))result.pending.push('Поддержку выбранных сцен, расписаний и интеграции необходимо проверить у SPI-контроллера.');}
+   else {result.title=proto[id].title+' + SPI';result.notices.push('SPI работает отдельной подсистемой. Общие сцены с основным освещением требуют проверки интеграции.');}
+  }
+  if(!spi.length&&id==='SPI')result.fail.push('SPI нужен только для адресной ленты с динамическими эффектами.');
+  result.fail=[...new Set(result.fail)];result.pending=[...new Set(result.pending)];result.notices=[...new Set(result.notices)];
+  const preference=[];const add=(weight,value)=>{if(value!==undefined&&value!==null)preference.push({weight,value});};
+  const small=['room','apartment'].includes(s.object), large=['house','office','restaurant','retail','hotel','commercial'].includes(s.object);
+  if(known(s.object))add(6,id==='DALI'?(large?1:.65):id==='ZIGBEE'?(large?1:.7):['TRIAC','WIFI'].includes(id)?(small?1:.65):1);
+  const scales={TRIAC:[1,.9,.65,.4,.25],DALI:[.45,.65,.85,1,1],WIFI:[1,1,.8,0,0],ZIGBEE:[.55,.75,.95,1,1],RF:[1,1,0,0,0],SPI:[1,1,1,1,1],SWITCH:[1,1,1,1,1]};const gi=['1','2-5','6-10','11-30','31+'].indexOf(s.groups);if(gi>=0)add(8,scales[id][gi]);
+  if(known(s.stage))add(6,id==='DALI'?(s.stage==='finished'?(s.bus==='existing'?1:s.bus==='approved'?.4:.2):1):['WIFI','ZIGBEE'].includes(id)?(s.stage==='finished'?1:.85):1);
+  if(known(s.budget)&&['DALI','WIFI','ZIGBEE'].includes(id)){const b={DALI:{low:.2,medium:.55,high:1},WIFI:{low:1,medium:.9,high:.7},ZIGBEE:{low:.45,medium:1,high:.75}};add(8,b[id][s.budget]);}
+  let priority=s.priority;if(priority==='unknown'&&controlsKnown){if(controls.includes('wall')&&!digital)priority='wall';else if(digital&&!controls.includes('wall'))priority='digital';}
+  if(known(priority))add(5,id==='DALI'?(priority==='wall'?1:priority==='digital'?.65:.85):['WIFI','ZIGBEE'].includes(id)?(priority==='digital'?1:priority==='wall'?.65:.9):1);
+  if(base.length&&allTypesKnown)add(4,id==='RF'&&base.every(x=>x.type.startsWith('strip_')||x.type==='lowv')?1:id==='TRIAC'&&base.every(x=>x.type==='strip_mono')?.7:1);
+  // Evaluate every source, but count each criterion once so extra SPI cards cannot inflate the score.
+  const uniqueChecks=new Map(), statusRank={pass:0,unknown:1,fail:2};
+  for(const c of result.checks){const old=uniqueChecks.get(c.label);if(!old||statusRank[c.status]>statusRank[old.status])uniqueChecks.set(c.label,c);}
+  const counted=[...uniqueChecks.values()], passed=counted.filter(x=>x.status==='pass').length, total=counted.length||1, prefDen=preference.reduce((a,x)=>a+x.weight,0), prefValue=prefDen?preference.reduce((a,x)=>a+x.weight*x.value,0)/prefDen:0;
+  const requiredPending=new Set(result.checks.filter(x=>x.status==='unknown').map(x=>x.detail));
+  const extraPending=result.pending.filter(x=>!requiredPending.has(x)).length;
+  result.score=Math.round(70*passed/(total+extraPending)+30*prefValue);
+  if(known(s.budget)&&id==='DALI'&&s.budget==='high')result.reasons.push('Бюджет выше среднего');if(known(s.budget)&&id==='ZIGBEE'&&s.budget==='medium')result.reasons.push('Соответствует среднему бюджету');
+  result.reasons=[...new Set(result.reasons)].slice(0,4);result.provisional=result.pending.length>0;return result;
+ }
+ const ids=base.length?['TRIAC','DALI','WIFI','ZIGBEE','RF','SWITCH']:['SPI'];
+ output.all=ids.map(candidate);output.excluded=output.all.filter(x=>x.fail.length);
+ let eligible=output.all.filter(x=>!x.fail.length).sort((a,b)=>b.score-a.score||Number(a.provisional)-Number(b.provisional)||ids.indexOf(a.id)-ids.indexOf(b.id));
+ const simple=eligible.find(x=>x.id==='SWITCH'&&!x.provisional);if(simple)eligible=[simple];
+ output.candidates=eligible.slice(0,3);return output;
+}
+
+
+/* Equipment catalogue transcribed from the user matrix, 02.10.2026.
+   Watt limits ALREADY include the user's 20% reserve; never apply it twice.
+   Missing specifications remain unverified. SKU strings preserve leading zeroes.
+   The contradictory TRIAC cells D6/D7 are not silently transposed. */
+const EQUIPMENT_NOTICE='Подбор является ориентировочным. Перед закупкой необходимо дополнительно уточнить параметры и совместимость оборудования.';
+const CATALOG={};
+function products(ids,extra={}){return ids.split(',').map(sku=>{sku=sku.trim();CATALOG[sku]={sku,...extra};return sku;});}
+function wattProducts(rows){return rows.map(([sku,values,volts=[12,24,48].slice(0,values.length)])=>{CATALOG[sku]={sku,volts,limits:Object.fromEntries(volts.map((v,i)=>[v,values[i]]))};return sku;});}
+function driverProducts(rows){return rows.map(([sku,min,max])=>{CATALOG[sku]={sku,current:[min,max]};return sku;});}
+const KIT={
+ triac:products('731003,731004,731005'),
+ daliRelay:products('721021'),
+ daliPhase:products('721018,721019,721020'),
+ wifiSwitch:products('MSN001,MSN002,MD003,MD004,MS008,MS007'),
+ wifiDim:products('MD005,MD006,MD002'),
+ hubs:products('MD-TRA034-W(N),MD-TRA034-W'),
+ triacDriver:driverProducts([['PSL-TR40-350-500mA',350,500],['PSL-TR40-550-700mA',550,700],['PSL-TR40-750-900mA',750,900],['PSL-TR40-300mA',300,300],['PSL-TR40-150-300mA',150,300]]),
+ daliDT6:driverProducts([['726001',500,1500],['721029',100,500],['721030',200,700],['721031',300,850],['721032',600,1200]]),
+ daliDT8:driverProducts([['721025',100,500],['721026',200,700],['721022',250,700],['721027',300,850],['721024',500,1500]]),
+ zigDriver:driverProducts([['771003',100,500],['771004',250,700],['771005',500,1500]]),
+ rfDim:wattProducts([['731013',[180,360,480]],['01113',[60,120]],['01115',[180,360]],['01114',[96,192]]]),
+ rfCCT:wattProducts([['01117',[120,240]],['01118',[192,384]],['01116',[60,120]]]),
+ rfRGB:wattProducts([['01119',[144,288]],['01125',[72,144]]]),
+ rfRGBW:wattProducts([['01122',[192,384]],['01121',[72,144]]]),
+ rfRGBCCT:wattProducts([['01123',[180,360]]]),
+ remoteDim:products('711034,01109,01112'), panelDim:products('711023,711012,711024'),
+ remoteCCT:products('711031,01110,01124'), panelCCT:products('711025,711026'),
+ remoteRGB:products('711033,01111'), panelRGB:products('711027,711028'),
+ remoteRGBW:products('711032,711033'),remoteRGBCCT:products('711032,711033'),
+ triacPSU:wattProducts([['734002',[100],[24]],['734004',[200],[24]],['734005',[300],[24]]]),
+ triacCV:products('731001'),
+ daliPSU6:wattProducts([['725002',[100],[24]],['725004',[200],[24]],['725005',[250],[24]]]),
+ daliPSU8:wattProducts([['725012',[100],[24]],['725014',[200],[24]],['725015',[240],[24]]]),
+ daliCV6:products('721049',{volts:[24]}),daliCV8:products('721016,721017',{volts:[24]}),
+ wifiCV:wattProducts([['742001',[180,360]],['742002',[360,720]]]),
+ zigCV:products('771001',{volts:[12,24,48]}),
+ wifiSPI:products('711039',{volts:[12,24]}),
+ spi:products('711009,711010',{volts:[12,24]}),
+ spiRemote:products('711030'),spiAmp:products('711007,711011'),
+ unity:products('TR021-1-12B3K-W-D-B,TR021-1-12B4K-W-D-B,TR021-1-12B4K-Z-D-W,TR084-1-15W3K-D-W')
+};
+Object.assign(CATALOG.MSN001,{channels:1,neutral:'no'});
+Object.assign(CATALOG.MSN002,{channels:2,neutral:'no'});
+for(const [sku,channels] of [['MD003',3],['MD004',4],['MS008',2],['MS007',1],['MD005',1],['MD006',2],['MD002',2]])Object.assign(CATALOG[sku],{channels});
+Object.assign(CATALOG['711007'],{outputs:6});Object.assign(CATALOG['711011'],{outputs:2});
+CATALOG['PSL-TR40-150-300mA'].note='Диапазон в названии и подписи матрицы расходится: 150–300 и 150–350 мА. Требуется уточнение.';
+const matrixCells={
+ lamp:{RF:'x',TRIAC:'D5',DALI:'E5',WIFI:'F5',ZIGBEE:'G5'},
+ led_integrated:{RF:'x',TRIAC:'D6',DALI:'E6',WIFI:'F6',ZIGBEE:'G6'},
+ led_external:{RF:'x',TRIAC:'x',DALI:'E7',WIFI:'F7',ZIGBEE:'G7'},
+ track230:{RF:'x',TRIAC:'D8',DALI:'E8',WIFI:'F8',ZIGBEE:'G8'},
+ track24:{RF:'C9',TRIAC:'D9',DALI:'E9',WIFI:'F9',ZIGBEE:'G9'},
+ track48:{RF:'x',TRIAC:'x',DALI:'E10',WIFI:'F10',ZIGBEE:'G10'},
+ lowv:{RF:'C11',TRIAC:'D11',DALI:'E11',WIFI:'F11',ZIGBEE:'G11'},
+ strip_mono:{RF:'C12',TRIAC:'D12',DALI:'E12',WIFI:'F12',ZIGBEE:'G12'},
+ strip_cct:{RF:'C13',TRIAC:'x',DALI:'E13',WIFI:'F13',ZIGBEE:'G13'},
+ strip_rgb:{RF:'C14',TRIAC:'x',DALI:'E14',WIFI:'F14',ZIGBEE:'G14'},
+ strip_rgbw:{RF:'C15',TRIAC:'x',DALI:'E15',WIFI:'F15',ZIGBEE:'G15'},
+ strip_rgbcct:{RF:'C16',TRIAC:'x',DALI:'x',WIFI:'F16',ZIGBEE:'G16'}
+};
+function matrixSupport(id,s){
+ if(id==='SWITCH'||isSPI(s)||s.type==='unknown')return {ok:true};
+ const cell=matrixCells[s.type]?.[id];
+ if(s.type==='lowv'&&numeric(s.voltage)!==null&&![12,24].includes(numeric(s.voltage)))return {ok:false,reason:'Для этого типа светильника матрица описывает питание только 12–24 В.'};
+ if(cell==='x')return {ok:false,reason:typeName(s)+': в матрице нет решения '+proto[id].title+'.'};
+ const f=s.features.filter(x=>x!=='unknown'),regulates=f.some(x=>x!=='onoff');
+ const onlySwitch=(['DALI','WIFI','ZIGBEE'].includes(id)&&s.type==='led_integrated')||(id==='ZIGBEE'&&['lamp','track230'].includes(s.type))||(id==='WIFI'&&s.type==='track48');
+ if(onlySwitch&&regulates)return {ok:false,reason:typeName(s)+': для '+proto[id].title+' в матрице предусмотрено только включение и выключение.'};
+ if(['lamp','track230','led_external'].includes(s.type)&&f.some(x=>['rgb','cct'].includes(x))&&['TRIAC','WIFI'].includes(id))return {ok:false,reason:typeName(s)+': фазовое диммирование не регулирует цвет и цветовую температуру.'};
+ if(['lamp','track230'].includes(s.type)&&f.some(x=>['rgb','cct'].includes(x))&&id==='DALI')return {ok:false,reason:typeName(s)+': указанный в матрице модуль DALI DT6 TRIAC регулирует только яркость.'};
+ return {ok:true};
+}
+function sourceVoltage(s){return s.type==='track24'?24:s.type==='track48'?48:numeric(s.voltage);}
+function sourceLoad(s){
+ const direct=numeric(s.load);if(direct!==null)return {value:direct,how:'Указанная нагрузка одного участка / группы'};
+ if(s.type?.startsWith('strip_')){const l=numeric(s.length),p=numeric(s.power);return {value:l!==null&&p!==null?Math.round(l*p*1000)/1000:null,how:'Длина × мощность на метр'};}
+ const p=numeric(s.unitPower),n=numeric(s.units);return {value:p!==null&&n!==null?Math.round(p*n*1000)/1000:null,how:'Мощность одного светильника × количество'};
+}
+function formatNumber(x){return x===null||x===undefined?'не указано':new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2}).format(x);}
+function productSpec(p){const out=[];if(p.volts)out.push(p.volts.join(' / ')+' В');if(p.limits)out.push(Object.entries(p.limits).map(([v,n])=>v+' В: до '+n+' Вт').join('; '));if(p.current)out.push((p.current[0]===p.current[1]?p.current[0]:p.current.join('–'))+' мА');if(p.channels)out.push(p.channels+' кан.');if(p.neutral==='no')out.push('без нейтрали');if(p.outputs)out.push(p.outputs+' выхода');return out.join(' · ');}
+function matchProduct(sku,s,role){
+ const p=CATALOG[sku],v=sourceVoltage(s),load=sourceLoad(s).value,current=numeric(s.current),pending=[],fail=[];
+ if(!p)return {sku,fail:['Артикул отсутствует в каталоге матрицы.'],pending:[],spec:''};
+ if(['cv','psu','spi'].includes(role)){
+  if(p.volts){if(v===null)pending.push('Уточнить напряжение');else if(!p.volts.includes(v))fail.push('Не поддерживает '+v+' В');}
+  else pending.push('Проверить напряжение устройства');
+  if(p.limits&&v!==null&&Object.hasOwn(p.limits,v)){if(load===null)pending.push('Уточнить нагрузку');else if(load>p.limits[v]+1e-9)fail.push('Нагрузка '+formatNumber(load)+' Вт превышает '+p.limits[v]+' Вт');}
+  else if(p.limits&&v===null)pending.push('Уточнить нагрузку при выбранном напряжении');
+  else pending.push('В матрице не указан предел мощности');
+ }
+ if(role==='driver'){
+  if(p.current){if(current===null)pending.push('Уточнить ток светильника');else if(current<p.current[0]||current>p.current[1])fail.push('Ток вне диапазона '+p.current.join('–')+' мА');}
+  else pending.push('Проверить ток драйвера');
+  pending.push('Сверить выходное напряжение и мощность драйвера: этих пределов нет в матрице');
+ }
+ if(role==='phase')pending.push('Уточнить допустимую LED-нагрузку и совместимость диммирования');
+ if(role==='switch')pending.push('Уточнить нагрузку, пусковые токи и схему подключения');
+ if(s.neutral==='no'&&role==='switch'&&sku.startsWith('M')){
+  if(p.neutral!=='no')pending.push('Работа без нейтрали не подтверждена в матрице');
+ }
+ if(p.note)pending.push(p.note);
+ return {sku,spec:productSpec(p),pending:[...new Set(pending)],fail};
+}
+function buildEquipment(raw,selected){
+ const s=normalize(raw),id=selected||s.selected,report={method:id,title:proto[id]?.title||'Метод не выбран',sources:[],system:[],notes:[],pending:[],valid:true};
+ if(!Object.hasOwn(proto,id)){report.valid=false;report.pending.push('Сначала выберите метод управления.');return report;}
+ const methods=evaluate(s),decision=methods.all.find(x=>x.id===id);
+ if(!decision||decision.fail.length){report.valid=false;report.pending.push(...(decision?.fail||['Выбранный метод нужно пересмотреть после изменения ответов.']));}
+ else {report.title=decision.title;report.pending.push(...decision.pending);}
+ const component=(src,type,ids=[],role='',note='')=>{
+  const tested=ids.map(sku=>matchProduct(sku,src,role)),accepted=tested.filter(x=>!x.fail.length);
+  const missing=[...new Set(accepted.flatMap(x=>x.pending))];
+  return {type,products:accepted,unmatched:ids.length>0&&!accepted.length,excluded:tested.filter(x=>x.fail.length),note,pending:missing};
+ };
+ const generic=(type,note='')=>({type,products:[],unmatched:false,excluded:[],note,pending:[]});
+ const controls=s.controls.filter(x=>x!=='unknown');
+ if(id==='ZIGBEE')report.system.push(component({},'ZigBee-хаб — один общий комплект на систему',KIT.hubs,'','Количество и размещение хабов уточняются по проекту.'));
+ if(id==='DALI'){
+  report.system.push(generic('Управление и питание шины DALI','Контроллер / мастер и источник питания шины: состав зависит от выбранной системы.'));
+  if(controls.includes('wall'))report.system.push(generic('Настенная панель DALI','Подбирается по числу групп и сцен; артикулы не заданы в матрице.'));
+  if(controls.includes('remote'))report.system.push(generic('Пульт и совместимый интерфейс DALI'));
+  if(controls.some(x=>x==='phone'||x==='voice'))report.system.push(generic('Интерфейс DALI для приложения / голосового помощника','Проверить совместимость системы и доступность выбранных функций.'));
+ }
+ if(id==='TRIAC'&&controls.includes('remote'))report.system.push(generic('Пульт, синхронизированный с совместимой панелью TRIAC','Артикул пульта в матрице не указан.'));
+ if(['WIFI','ZIGBEE'].includes(id)&&controls.includes('wall'))report.system.push(generic('Совместимая настенная панель / клавиша','Исполнение выбирается с учётом управляющего устройства и проводки.'));
+ if(['WIFI','ZIGBEE'].includes(id)&&controls.includes('remote'))report.system.push(generic('Совместимый пульт управления','Совместимость пульта с выбранными устройствами необходимо уточнить.'));
+ if(controls.includes('voice'))report.system.push(generic('Совместимый голосовой помощник','Проверить поддержку выбранной экосистемы.'));
+ for(const src of s.sources){
+  const isSpi=isSPI(src),pid=isSpi?(src.spiControl==='phone'?'WIFI_SPI':'SPI'):id;
+  const entry={id:src.id,name:src.name||typeName(src),type:typeName(src),method:isSpi?(pid==='WIFI_SPI'?'Wi-Fi + SPI':'SPI'):proto[id].title,functions:src.features.map(f=>label('features',f)).join(', '),voltage:sourceVoltage(src),load:sourceLoad(src),packages:[],notes:[],pending:[]};
+  const add=(title,items)=>entry.packages.push({title,items});
+  const c=(type,ids,role,note)=>component(src,type,ids,role,note);
+  const f=src.features,unknown=f.includes('unknown'),dim=f.includes('dim'),cct=f.includes('cct'),rgb=f.includes('rgb'),onoff=!unknown&&f.every(x=>x==='onoff');
+  const cv=src.type.startsWith('strip_')||['track24','lowv'].includes(src.type);
+  const psu=()=>generic('Источник напряжения для питания нагрузки',entry.voltage?('Выход '+entry.voltage+' В. Проверить мощность, исполнение и условия монтажа.'):'Напряжение и мощность уточняются по источнику света.');
+  const phaseCheck=()=>{
+   if(src.phaseDim==='no'){entry.pending.push('Фазовое диммирование не поддерживается. Этот набор не подходит указанному источнику.');return false;}
+   if(src.phaseDim!=='yes')entry.pending.push('Подтвердите поддержку фазового диммирования TRIAC источником и его драйвером.');
+   return true;
+  };
+  if(src.type==='unknown'){entry.pending.push('Уточните тип источника, чтобы подобрать оборудование.');report.sources.push(entry);continue;}
+  if(unknown){entry.pending.push('Уточните регулируемые параметры света. Без них нельзя выбрать верный набор.');report.sources.push(entry);continue;}
+  const support=matrixSupport(id,src);
+  if(!isSpi&&!support.ok){entry.pending.push(support.reason);if(src.type==='led_external'&&id==='TRIAC')entry.notes.push('В матрице D7 стоит «×», а набор TRIAC-драйверов записан в D6 у встроенного драйвера. Требуется уточнение этой строки.');report.sources.push(entry);continue;}
+  if(isSpi){
+   if(!f.includes('effects'))entry.pending.push('В этом подборе SPI применяется при запросе динамических эффектов.');
+   if(src.spiControl==='unknown')entry.pending.push('Выберите управление с пульта или смартфона.');
+   if(pid==='WIFI_SPI'&&s.internet!=='yes')entry.pending.push('Для варианта Wi-Fi + SPI требуется подтверждённый стабильный интернет.');
+   const items=[c(pid==='WIFI_SPI'?'Контроллер Wi-Fi–SPI 12–24 В':'SPI-контроллер 12–24 В',pid==='WIFI_SPI'?KIT.wifiSPI:KIT.spi,'spi','Проверить тип микросхемы / сигнала, количество пикселей и мощность.')];
+   if(src.spiControl==='remote')items.push(c('Пульт SPI RF',KIT.spiRemote));
+   items.push(psu());
+   if(src.sync==='yes')items.push(c('SPI-усилитель для синхронных участков',KIT.spiAmp,'','711007: 6 каналов; 711011: 2 канала. Проверить сигнал и количество участков.'));
+   if(src.sync==='unknown')entry.notes.push('При синхронной работе нескольких участков может потребоваться SPI-усилитель.');
+   add('Управление динамической лентой',items);
+  }else if(id==='SWITCH'){
+   add('Включение и выключение',[generic('Обычный настенный выключатель'),...(cv||src.type==='track48'?[psu()]:[])]);
+  }else if(id==='TRIAC'){
+   if(['lamp','led_integrated','track230'].includes(src.type)){
+    if(phaseCheck()){
+     const items=[c('Светорегулятор TRIAC',KIT.triac,'phase')];
+     if(src.type==='lamp')items.push(generic('Диммируемая лампа, совместимая с TRIAC'));
+     if(src.type==='track230')items.push(c('Трековая система с TRIAC-диммируемыми светильниками Unity',KIT.unity,'','Артикулы светильников приведены как варианты исполнения.'));
+     if(src.type==='led_integrated')entry.notes.push('Встроенный драйвер не заменяется. Допустим только светильник с заводской поддержкой TRIAC; заменяемые драйверы из D6 не предлагаются.');
+     add('Управление яркостью',items);
+    }
+   }else if(cv){
+    add('Вариант 1 — диммируемый источник питания',[c('Светорегулятор TRIAC',KIT.triac,'phase'),c('Источник напряжения 24 В с диммированием TRIAC',KIT.triacPSU,'psu')]);
+    add('Вариант 2 — отдельный контроллер',[c('Светорегулятор TRIAC',KIT.triac,'phase'),c('Контроллер TRIAC',KIT.triacCV,'cv','Напряжение и допустимая нагрузка 731001 в матрице не приведены.'),psu()]);
+   }
+  }else if(id==='DALI'){
+   if(['lamp','led_integrated','track230'].includes(src.type)){
+    if(onoff)add('Включение и выключение',[c('Релейный модуль DALI',KIT.daliRelay,'switch')]);
+    else if(phaseCheck())add('Регулировка яркости',[c('Диммер DALI DT6 TRIAC',KIT.daliPhase,'phase','Источник должен поддерживать фазовое диммирование.')]);
+   }else if(src.type==='led_external'){
+    if(rgb)entry.pending.push('В матрице нет драйвера для RGB-светильника с внешним драйвером.');
+    else add(cct?'Драйвер для яркости и цветовой температуры':'Драйвер для яркости',[c(cct?'Источник тока DALI DT8':'Источник тока DALI DT6',cct?KIT.daliDT8:KIT.daliDT6,'driver','Заменяет внешний драйвер. Настройка тока должна соответствовать светильнику.')]);
+   }else if(src.type==='track48'){
+    add('Вариант 1 — индивидуальное управление',[generic('Трековая система 48 В со светильниками DALI','Например, Exility DALI 48 В. Каждый светильник управляется индивидуально.'),psu()]);
+    add('Вариант 2 — управление всей системой',[generic('Источник напряжения DALI 48 В','Только для трековой системы, допускающей такое питание. Все светильники работают одной группой.')]);
+   }else if(cv){
+    const color=['strip_cct','strip_rgb','strip_rgbw'].includes(src.type)||cct||rgb;
+    if(!rgb&&!['strip_rgb','strip_rgbw'].includes(src.type))add('Вариант 1 — управляемый источник питания',[c(color?'Источник напряжения 24 В DALI DT8':'Источник напряжения 24 В DALI DT6',color?KIT.daliPSU8:KIT.daliPSU6,'psu')]);
+    add('Вариант '+(!rgb&&!['strip_rgb','strip_rgbw'].includes(src.type)?'2':'1')+' — контроллер и источник питания',[c(color?'Контроллер DALI DT8 24 В':'Диммер DALI DT6 24 В',color?KIT.daliCV8:KIT.daliCV6,'cv'),psu()]);
+   }
+  }else if(id==='WIFI'){
+   if(['lamp','led_integrated','track230','track48','led_external'].includes(src.type)){
+    if(onoff)add('Включение и выключение',[c('Wi-Fi-выключатель',src.type==='led_external'?[]:KIT.wifiSwitch,'switch','Число каналов выбирается по независимым группам. Для MSN001/MSN002 указана работа без нейтрали.')]);
+    else if(src.type==='led_external'){
+     add('Регулировка яркости',[generic('Wi-Fi-диммер','Артикулы для этой строки в матрице не указаны.'),generic('Внешний драйвер TRIAC с подходящими током и напряжением','Замена требуется, если штатный драйвер не поддерживает фазовое диммирование.')]);
+    }else if(phaseCheck())add('Регулировка яркости',[c('Wi-Fi-диммер',KIT.wifiDim,'phase')]);
+   }else if(cv)add('Управление лентой / нагрузкой постоянного напряжения',[c('Контроллер Wi-Fi 12–24 В',KIT.wifiCV,'cv','Режим каналов выбирается по типу источника и нужным функциям.'),psu()]);
+  }else if(id==='ZIGBEE'){
+   if(['lamp','led_integrated','track230'].includes(src.type))add('Включение и выключение',[generic('ZigBee-выключатель','Предложение Maytoni для выключателя в матрице отсутствует.')]);
+   else if(src.type==='led_external'){
+    if(rgb)entry.pending.push('Управление RGB для этих драйверов в матрице не подтверждено.');
+    else add(cct?'Яркость и цветовая температура':'Регулировка яркости',[c(cct?'ZigBee-драйвер с поддержкой регулировки CCT':'ZigBee источник тока (драйвер)',KIT.zigDriver,'driver',cct?'Поддержку CCT у выбранного артикула дополнительно уточнить: в матрице нет отдельной разбивки по этой функции.':'Заменяет внешний драйвер светильника.')]);
+   }else if(src.type==='track48'){
+    add('Вариант 1 — индивидуальное управление',[generic('Трековая система 48 В со светильниками ZigBee','Например, Exility ZigBee 48 В. Каждый светильник управляется индивидуально.'),psu()]);
+    add('Вариант 2 — управление всей системой',[generic('Источник напряжения ZigBee 48 В','Только для совместимой трековой системы; все светильники работают одной группой.')]);
+   }else if(cv)add('Управление лентой / нагрузкой постоянного напряжения',[c('ZigBee-контроллер 12–48 В',KIT.zigCV,'cv','Уточнить предел мощности и режим каналов.'),psu()]);
+  }else if(id==='RF'){
+   if(src.type==='track24'&&src.rfCompatible==='no')entry.pending.push('Совместимость трека с ШИМ не подтверждена: набор применять нельзя.');
+   else{
+    if(src.type==='track24'&&src.rfCompatible!=='yes')entry.pending.push('Подтвердите, что трек допускает управление ШИМ.');
+    const mode=src.type==='strip_rgbcct'?'RGBCCT':src.type==='strip_rgbw'?'RGBW':src.type==='strip_rgb'||rgb?'RGB':src.type==='strip_cct'||cct?'CCT':'Dim';
+    const names={Dim:'Диммер RF',CCT:'Контроллер RF MIX / CCT',RGB:'Контроллер RF RGB',RGBW:'Контроллер RF RGBW',RGBCCT:'Контроллер RF RGB+MIX'};
+    const items=[c(names[mode],KIT['rf'+mode],'cv'),psu()];
+    if(controls.includes('remote'))items.push(c('Пульт RF '+(mode==='Dim'?'DIM':mode==='CCT'?'MIX':mode),KIT['remote'+mode]));
+    if(controls.includes('wall'))items.push(c('Настенная панель RF '+(mode==='Dim'?'DIM':mode==='CCT'?'MIX':mode),KIT['panel'+mode]||[],'','Проверить поддержку нужного числа групп и сцен.'));
+    if(!controls.includes('wall')&&!controls.includes('remote'))entry.pending.push('Уточните, нужен пульт или настенная панель.');
+    add('Контроллер и выбранные средства управления',items);
+   }
+  }
+  if(!entry.packages.length&&!entry.pending.length)entry.pending.push('Для этого сочетания в матрице не задан набор оборудования.');
+  for(const pack of entry.packages)pack.hasMismatch=pack.items.some(x=>x.unmatched);
+  if(entry.voltage!==null&&src.type==='lowv'&&!([12,24].includes(entry.voltage)))entry.pending.push('Для этого типа светильника матрица описывает только 12–24 В. Уточните тип и питание.');
+  report.sources.push(entry);
+ }
+ if(s.sources.some(isSPI)&&s.sources.some(x=>!isSPI(x)))report.notes.push('SPI — отдельная подсистема. Общие сцены и синхронизацию с основным светом необходимо проверить.');
+ report.notes.push('Артикулы в одном списке — варианты на выбор. Число устройств и схема подключения уточняются по проекту.');
+ report.notes.push('Пределы нагрузки взяты из вашей матрицы с уже учтённым запасом 20%; повторный запас к этим лимитам не применяется.');
+ return report;
+}
+
+const XLSX_TEMPLATE={"xl/workbook.xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><x:workbook xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><x:sheets><x:sheet name=\"Подбор\" sheetId=\"1\" r:id=\"Rcf3532644efa4f91\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" /><x:sheet name=\"Параметры\" sheetId=\"2\" r:id=\"R9878b985d13248cc\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" /><\/x:sheets><\/x:workbook>", "xl/styles.xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><x:styleSheet xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><x:numFmts count=\"2\"><x:numFmt numFmtId=\"200\" formatCode=\"@\" /><x:numFmt numFmtId=\"201\" formatCode=\"0.00\" /><\/x:numFmts><x:fonts count=\"6\"><x:font><x:sz val=\"11\" /><x:name val=\"Carlito\" /><\/x:font><x:font><x:sz val=\"11\" /><x:color rgb=\"FF282332\" /><x:name val=\"Arial\" /><\/x:font><x:font><x:b /><x:sz val=\"16\" /><x:color rgb=\"FF282332\" /><x:name val=\"Arial\" /><\/x:font><x:font><x:sz val=\"11\" /><x:color rgb=\"FF805B14\" /><x:name val=\"Arial\" /><\/x:font><x:font><x:b /><x:sz val=\"11\" /><x:color rgb=\"FFFFFFFF\" /><x:name val=\"Arial\" /><\/x:font><x:font><x:b /><x:sz val=\"11\" /><x:color rgb=\"FF7C54FE\" /><x:name val=\"Arial\" /><\/x:font><\/x:fonts><x:fills count=\"3\"><x:fill><x:patternFill patternType=\"none\" /><\/x:fill><x:fill><x:patternFill patternType=\"gray125\" /><\/x:fill><x:fill><x:patternFill patternType=\"solid\"><x:fgColor rgb=\"FF7C54FE\" /><\/x:patternFill><\/x:fill><\/x:fills><x:borders count=\"1\"><x:border><x:left /><x:right /><x:top /><x:bottom /><x:diagonal /><\/x:border><\/x:borders><x:cellStyleXfs count=\"1\"><x:xf numFmtId=\"0\" fontId=\"0\" fillId=\"0\" borderId=\"0\" /><\/x:cellStyleXfs><x:cellXfs count=\"12\"><x:xf numFmtId=\"0\" fontId=\"0\" fillId=\"0\" borderId=\"0\" xfId=\"0\" /><x:xf numFmtId=\"0\" fontId=\"1\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" /><x:xf numFmtId=\"0\" fontId=\"1\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" applyAlignment=\"1\"><x:alignment vertical=\"top\" /><\/x:xf><x:xf numFmtId=\"0\" fontId=\"1\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" applyAlignment=\"1\"><x:alignment vertical=\"top\" wrapText=\"1\" /><\/x:xf><x:xf numFmtId=\"0\" fontId=\"2\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" applyAlignment=\"1\"><x:alignment vertical=\"top\" wrapText=\"1\" /><\/x:xf><x:xf numFmtId=\"0\" fontId=\"3\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" applyAlignment=\"1\"><x:alignment vertical=\"top\" wrapText=\"1\" /><\/x:xf><x:xf numFmtId=\"0\" fontId=\"1\" fillId=\"2\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" applyAlignment=\"1\"><x:alignment vertical=\"top\" wrapText=\"1\" /><\/x:xf><x:xf numFmtId=\"0\" fontId=\"4\" fillId=\"2\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" applyAlignment=\"1\"><x:alignment vertical=\"top\" wrapText=\"1\" /><\/x:xf><x:xf numFmtId=\"0\" fontId=\"5\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" applyAlignment=\"1\"><x:alignment vertical=\"top\" wrapText=\"1\" /><\/x:xf><x:xf numFmtId=\"200\" fontId=\"5\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" applyAlignment=\"1\"><x:alignment vertical=\"top\" wrapText=\"1\" /><\/x:xf><x:xf numFmtId=\"200\" fontId=\"5\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" applyAlignment=\"1\"><x:alignment horizontal=\"left\" vertical=\"top\" wrapText=\"1\" /><\/x:xf><x:xf numFmtId=\"201\" fontId=\"1\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" applyAlignment=\"1\"><x:alignment vertical=\"top\" wrapText=\"1\" /><\/x:xf><\/x:cellXfs><x:cellStyles count=\"1\"><x:cellStyle name=\"Normal\" xfId=\"0\" /><\/x:cellStyles><\/x:styleSheet>", "xl/theme/theme1.xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><a:theme name=\"ChatGPT\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\"><a:themeElements><a:clrScheme name=\"ChatGPT\"><a:dk1><a:sysClr val=\"windowText\" lastClr=\"000000\" /><\/a:dk1><a:lt1><a:sysClr val=\"window\" lastClr=\"FFFFFF\" /><\/a:lt1><a:dk2><a:srgbClr val=\"0E2841\" /><\/a:dk2><a:lt2><a:srgbClr val=\"E8E8E8\" /><\/a:lt2><a:accent1><a:srgbClr val=\"156082\" /><\/a:accent1><a:accent2><a:srgbClr val=\"E97132\" /><\/a:accent2><a:accent3><a:srgbClr val=\"196B24\" /><\/a:accent3><a:accent4><a:srgbClr val=\"0F9ED5\" /><\/a:accent4><a:accent5><a:srgbClr val=\"A02B93\" /><\/a:accent5><a:accent6><a:srgbClr val=\"4EA72E\" /><\/a:accent6><a:hlink><a:srgbClr val=\"467886\" /><\/a:hlink><a:folHlink><a:srgbClr val=\"96607D\" /><\/a:folHlink><\/a:clrScheme><a:fontScheme name=\"Office\"><a:majorFont><a:latin typeface=\"Calibri Light\" /><a:ea typeface=\"Calibri Light\" /><a:cs typeface=\"Calibri Light\" /><\/a:majorFont><a:minorFont><a:latin typeface=\"Calibri\" /><a:ea typeface=\"Calibri\" /><a:cs typeface=\"Calibri\" /><\/a:minorFont><\/a:fontScheme><a:fmtScheme name=\"ChatGPT\"><a:fillStyleLst><a:solidFill><a:schemeClr val=\"phClr\" /><\/a:solidFill><a:gradFill><a:gsLst><a:gs pos=\"0\"><a:schemeClr val=\"phClr\"><a:tint val=\"67000\" /><a:lumMod val=\"110000\" /><a:satMod val=\"105000\" /><\/a:schemeClr><\/a:gs><a:gs pos=\"50000\"><a:schemeClr val=\"phClr\"><a:tint val=\"73000\" /><a:lumMod val=\"105000\" /><a:satMod val=\"103000\" /><\/a:schemeClr><\/a:gs><a:gs pos=\"100000\"><a:schemeClr val=\"phClr\"><a:tint val=\"81000\" /><a:lumMod val=\"105000\" /><a:satMod val=\"109000\" /><\/a:schemeClr><\/a:gs><\/a:gsLst><a:lin ang=\"5400000\" scaled=\"0\" /><\/a:gradFill><a:gradFill><a:gsLst><a:gs pos=\"0\"><a:schemeClr val=\"phClr\"><a:tint val=\"94000\" /><a:lumMod val=\"102000\" /><a:satMod val=\"103000\" /><\/a:schemeClr><\/a:gs><a:gs pos=\"50000\"><a:schemeClr val=\"phClr\"><a:shade val=\"100000\" /><a:lumMod val=\"100000\" /><a:satMod val=\"110000\" /><\/a:schemeClr><\/a:gs><a:gs pos=\"100000\"><a:schemeClr val=\"phClr\"><a:shade val=\"78000\" /><a:lumMod val=\"99000\" /><a:satMod val=\"120000\" /><\/a:schemeClr><\/a:gs><\/a:gsLst><a:lin ang=\"5400000\" scaled=\"0\" /><\/a:gradFill><\/a:fillStyleLst><a:lnStyleLst><a:ln w=\"12700\"><a:solidFill><a:schemeClr val=\"phClr\" /><\/a:solidFill><a:prstDash val=\"solid\" /><\/a:ln><a:ln w=\"19050\"><a:solidFill><a:schemeClr val=\"phClr\" /><\/a:solidFill><a:prstDash val=\"solid\" /><\/a:ln><a:ln w=\"25400\"><a:solidFill><a:schemeClr val=\"phClr\" /><\/a:solidFill><a:prstDash val=\"solid\" /><\/a:ln><\/a:lnStyleLst><a:effectStyleLst><a:effectStyle><a:effectLst /><\/a:effectStyle><a:effectStyle><a:effectLst /><\/a:effectStyle><a:effectStyle><a:effectLst><a:outerShdw blurRad=\"57150\" dist=\"19050\" dir=\"5400000\"><a:srgbClr val=\"000000\"><a:alpha val=\"63000\" /><\/a:srgbClr><\/a:outerShdw><\/a:effectLst><\/a:effectStyle><\/a:effectStyleLst><a:bgFillStyleLst><a:solidFill><a:schemeClr val=\"phClr\" /><\/a:solidFill><a:solidFill><a:schemeClr val=\"phClr\"><a:tint val=\"95000\" /><a:satMod val=\"170000\" /><\/a:schemeClr><\/a:solidFill><a:gradFill><a:gsLst><a:gs pos=\"0\"><a:schemeClr val=\"phClr\"><a:tint val=\"93000\" /><a:shade val=\"98000\" /><a:lumMod val=\"102000\" /><a:satMod val=\"150000\" /><\/a:schemeClr><\/a:gs><a:gs pos=\"50000\"><a:schemeClr val=\"phClr\"><a:tint val=\"98000\" /><a:shade val=\"90000\" /><a:lumMod val=\"103000\" /><a:satMod val=\"130000\" /><\/a:schemeClr><\/a:gs><a:gs pos=\"100000\"><a:schemeClr val=\"phClr\"><a:shade val=\"63000\" /><a:satMod val=\"120000\" /><\/a:schemeClr><\/a:gs><\/a:gsLst><a:lin ang=\"5400000\" scaled=\"0\" /><\/a:gradFill><\/a:bgFillStyleLst><\/a:fmtScheme><\/a:themeElements><\/a:theme>", "xl/sharedStrings.xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><x:sst xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" />", "xl/worksheets/sheet1.xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetPr><tabColor rgb=\"FF7C54FE\" /><\/sheetPr><sheetViews><sheetView showGridLines=\"0\" workbookViewId=\"0\"><pane ySplit=\"6\" topLeftCell=\"A7\" activePane=\"bottomLeft\" state=\"frozen\" /><\/sheetView><\/sheetViews><sheetFormatPr defaultRowHeight=\"15\" /><cols><col min=\"1\" max=\"1\" width=\"28\" hidden=\"0\" customWidth=\"1\" /><col min=\"2\" max=\"2\" width=\"18\" hidden=\"0\" customWidth=\"1\" /><col min=\"3\" max=\"3\" width=\"30\" hidden=\"0\" customWidth=\"1\" /><col min=\"4\" max=\"4\" width=\"42\" hidden=\"0\" customWidth=\"1\" /><col min=\"5\" max=\"5\" width=\"32\" hidden=\"0\" customWidth=\"1\" /><col min=\"6\" max=\"6\" width=\"30\" hidden=\"0\" customWidth=\"1\" /><col min=\"7\" max=\"7\" width=\"62\" hidden=\"0\" customWidth=\"1\" /><\/cols><sheetData><row r=\"1\"><c r=\"A1\" s=\"3\" /><c r=\"B1\" s=\"3\" /><c r=\"C1\" s=\"3\" /><c r=\"D1\" s=\"3\" /><c r=\"E1\" s=\"3\" /><c r=\"F1\" s=\"3\" /><c r=\"G1\" s=\"3\" /><\/row><row r=\"2\"><c r=\"A2\" s=\"4\" t=\"str\"><v>Maytoni — Подбор<\/v><\/c><c r=\"B2\" s=\"3\" /><c r=\"C2\" s=\"3\" /><c r=\"D2\" s=\"3\" /><c r=\"E2\" s=\"3\" /><c r=\"F2\" s=\"3\" /><c r=\"G2\" s=\"3\" /><\/row><row r=\"3\"><c r=\"A3\" s=\"5\" t=\"str\"><v>Подбор является ориентировочным. Перед закупкой необходимо дополнительно уточнить параметры оборудования.<\/v><\/c><c r=\"B3\" s=\"3\" /><c r=\"C3\" s=\"3\" /><c r=\"D3\" s=\"3\" /><c r=\"E3\" s=\"3\" /><c r=\"F3\" s=\"3\" /><c r=\"G3\" s=\"3\" /><\/row><row r=\"4\"><c r=\"A4\" s=\"3\" /><c r=\"B4\" s=\"3\" /><c r=\"C4\" s=\"3\" /><c r=\"D4\" s=\"3\" /><c r=\"E4\" s=\"3\" /><c r=\"F4\" s=\"3\" /><c r=\"G4\" s=\"3\" /><\/row><row r=\"5\"><c r=\"A5\" s=\"3\" /><c r=\"B5\" s=\"3\" /><c r=\"C5\" s=\"3\" /><c r=\"D5\" s=\"3\" /><c r=\"E5\" s=\"3\" /><c r=\"F5\" s=\"3\" /><c r=\"G5\" s=\"3\" /><\/row><row r=\"6\" ht=\"34\" customHeight=\"1\"><c r=\"A6\" s=\"7\" t=\"str\"><v>Источник / зона<\/v><\/c><c r=\"B6\" s=\"7\" t=\"str\"><v>Метод<\/v><\/c><c r=\"C6\" s=\"7\" t=\"str\"><v>Вариант комплекта<\/v><\/c><c r=\"D6\" s=\"7\" t=\"str\"><v>Тип оборудования<\/v><\/c><c r=\"E6\" s=\"7\" t=\"str\"><v>Предложение Maytoni<\/v><\/c><c r=\"F6\" s=\"7\" t=\"str\"><v>Проверка параметров<\/v><\/c><c r=\"G6\" s=\"7\" t=\"str\"><v>Условия и уточнения<\/v><\/c><\/row><row r=\"7\" ht=\"42\" customHeight=\"1\"><c r=\"A7\" s=\"3\" t=\"str\"><v>Образец строки<\/v><\/c><c r=\"B7\" s=\"3\" /><c r=\"C7\" s=\"3\" /><c r=\"D7\" s=\"3\" /><c r=\"E7\" s=\"10\" t=\"str\"><v>00123<\/v><\/c><c r=\"F7\" s=\"3\" /><c r=\"G7\" s=\"3\" /><\/row><row r=\"8\" ht=\"42\" customHeight=\"1\"><c r=\"A8\" s=\"3\" /><c r=\"B8\" s=\"3\" /><c r=\"C8\" s=\"3\" /><c r=\"D8\" s=\"3\" /><c r=\"E8\" s=\"10\" /><c r=\"F8\" s=\"3\" /><c r=\"G8\" s=\"3\" /><\/row><\/sheetData><pageMargins left=\"0.7\" right=\"0.7\" top=\"0.75\" bottom=\"0.75\" header=\"0.3\" footer=\"0.3\" /><\/worksheet>", "xl/worksheets/sheet2.xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><sheetPr><tabColor rgb=\"FF7C54FE\" /><\/sheetPr><sheetViews><sheetView showGridLines=\"0\" workbookViewId=\"0\"><pane ySplit=\"6\" topLeftCell=\"A7\" activePane=\"bottomLeft\" state=\"frozen\" /><\/sheetView><\/sheetViews><sheetFormatPr defaultRowHeight=\"15\" /><cols><col min=\"1\" max=\"1\" width=\"28\" hidden=\"0\" customWidth=\"1\" /><col min=\"2\" max=\"2\" width=\"48\" hidden=\"0\" customWidth=\"1\" /><col min=\"3\" max=\"3\" width=\"28\" hidden=\"0\" customWidth=\"1\" /><col min=\"4\" max=\"4\" width=\"18\" hidden=\"0\" customWidth=\"1\" /><col min=\"5\" max=\"5\" width=\"16\" hidden=\"0\" customWidth=\"1\" /><col min=\"6\" max=\"6\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><col min=\"7\" max=\"7\" width=\"23\" hidden=\"0\" customWidth=\"1\" /><col min=\"8\" max=\"8\" width=\"18\" hidden=\"0\" customWidth=\"1\" /><col min=\"9\" max=\"9\" width=\"26\" hidden=\"0\" customWidth=\"1\" /><col min=\"10\" max=\"10\" width=\"26\" hidden=\"0\" customWidth=\"1\" /><col min=\"11\" max=\"11\" width=\"18\" hidden=\"0\" customWidth=\"1\" /><col min=\"12\" max=\"12\" width=\"23\" hidden=\"0\" customWidth=\"1\" /><col min=\"13\" max=\"13\" width=\"23\" hidden=\"0\" customWidth=\"1\" /><\/cols><sheetData><row r=\"1\"><c r=\"A1\" s=\"3\" /><c r=\"B1\" s=\"3\" /><c r=\"C1\" s=\"3\" /><c r=\"D1\" s=\"3\" /><c r=\"E1\" s=\"3\" /><c r=\"F1\" s=\"3\" /><c r=\"G1\" s=\"3\" /><c r=\"H1\" s=\"3\" /><c r=\"I1\" s=\"3\" /><c r=\"J1\" s=\"3\" /><c r=\"K1\" s=\"3\" /><c r=\"L1\" s=\"3\" /><c r=\"M1\" s=\"3\" /><\/row><row r=\"2\"><c r=\"A2\" s=\"4\" t=\"str\"><v>Maytoni — Параметры<\/v><\/c><c r=\"B2\" s=\"3\" /><c r=\"C2\" s=\"3\" /><c r=\"D2\" s=\"3\" /><c r=\"E2\" s=\"3\" /><c r=\"F2\" s=\"3\" /><c r=\"G2\" s=\"3\" /><c r=\"H2\" s=\"3\" /><c r=\"I2\" s=\"3\" /><c r=\"J2\" s=\"3\" /><c r=\"K2\" s=\"3\" /><c r=\"L2\" s=\"3\" /><c r=\"M2\" s=\"3\" /><\/row><row r=\"3\"><c r=\"A3\" s=\"5\" t=\"str\"><v>Подбор является ориентировочным. Перед закупкой необходимо дополнительно уточнить параметры оборудования.<\/v><\/c><c r=\"B3\" s=\"3\" /><c r=\"C3\" s=\"3\" /><c r=\"D3\" s=\"3\" /><c r=\"E3\" s=\"3\" /><c r=\"F3\" s=\"3\" /><c r=\"G3\" s=\"3\" /><c r=\"H3\" s=\"3\" /><c r=\"I3\" s=\"3\" /><c r=\"J3\" s=\"3\" /><c r=\"K3\" s=\"3\" /><c r=\"L3\" s=\"3\" /><c r=\"M3\" s=\"3\" /><\/row><row r=\"4\"><c r=\"A4\" s=\"3\" /><c r=\"B4\" s=\"3\" /><c r=\"C4\" s=\"3\" /><c r=\"D4\" s=\"3\" /><c r=\"E4\" s=\"3\" /><c r=\"F4\" s=\"3\" /><c r=\"G4\" s=\"3\" /><c r=\"H4\" s=\"3\" /><c r=\"I4\" s=\"3\" /><c r=\"J4\" s=\"3\" /><c r=\"K4\" s=\"3\" /><c r=\"L4\" s=\"3\" /><c r=\"M4\" s=\"3\" /><\/row><row r=\"5\"><c r=\"A5\" s=\"3\" /><c r=\"B5\" s=\"3\" /><c r=\"C5\" s=\"3\" /><c r=\"D5\" s=\"3\" /><c r=\"E5\" s=\"3\" /><c r=\"F5\" s=\"3\" /><c r=\"G5\" s=\"3\" /><c r=\"H5\" s=\"3\" /><c r=\"I5\" s=\"3\" /><c r=\"J5\" s=\"3\" /><c r=\"K5\" s=\"3\" /><c r=\"L5\" s=\"3\" /><c r=\"M5\" s=\"3\" /><\/row><row r=\"6\" ht=\"34\" customHeight=\"1\"><c r=\"A6\" s=\"7\" t=\"str\"><v>Источник / зона<\/v><\/c><c r=\"B6\" s=\"7\" t=\"str\"><v>Тип источника<\/v><\/c><c r=\"C6\" s=\"7\" t=\"str\"><v>Функции<\/v><\/c><c r=\"D6\" s=\"7\" t=\"str\"><v>Напряжение, В<\/v><\/c><c r=\"E6\" s=\"7\" t=\"str\"><v>Длина, м<\/v><\/c><c r=\"F6\" s=\"7\" t=\"str\"><v>Мощность, Вт/м<\/v><\/c><c r=\"G6\" s=\"7\" t=\"str\"><v>Мощность 1 шт., Вт<\/v><\/c><c r=\"H6\" s=\"7\" t=\"str\"><v>Количество, шт.<\/v><\/c><c r=\"I6\" s=\"7\" t=\"str\"><v>Нагрузка напрямую, Вт<\/v><\/c><c r=\"J6\" s=\"7\" t=\"str\"><v>Расчётная нагрузка, Вт<\/v><\/c><c r=\"K6\" s=\"7\" t=\"str\"><v>Ток, мА<\/v><\/c><c r=\"L6\" s=\"7\" t=\"str\"><v>Напряжение min, В<\/v><\/c><c r=\"M6\" s=\"7\" t=\"str\"><v>Напряжение max, В<\/v><\/c><\/row><row r=\"7\" ht=\"42\" customHeight=\"1\"><c r=\"A7\" s=\"3\" t=\"str\"><v>Образец строки<\/v><\/c><c r=\"B7\" s=\"3\" /><c r=\"C7\" s=\"3\" /><c r=\"D7\" s=\"11\" /><c r=\"E7\" s=\"11\" /><c r=\"F7\" s=\"11\" /><c r=\"G7\" s=\"11\" /><c r=\"H7\" s=\"11\" /><c r=\"I7\" s=\"11\" /><c r=\"J7\" s=\"11\" /><c r=\"K7\" s=\"11\" /><c r=\"L7\" s=\"11\" /><c r=\"M7\" s=\"11\" /><\/row><row r=\"8\" ht=\"42\" customHeight=\"1\"><c r=\"A8\" s=\"3\" /><c r=\"B8\" s=\"3\" /><c r=\"C8\" s=\"3\" /><c r=\"D8\" s=\"11\" /><c r=\"E8\" s=\"11\" /><c r=\"F8\" s=\"11\" /><c r=\"G8\" s=\"11\" /><c r=\"H8\" s=\"11\" /><c r=\"I8\" s=\"11\" /><c r=\"J8\" s=\"11\" /><c r=\"K8\" s=\"11\" /><c r=\"L8\" s=\"11\" /><c r=\"M8\" s=\"11\" /><\/row><\/sheetData><pageMargins left=\"0.7\" right=\"0.7\" top=\"0.75\" bottom=\"0.75\" header=\"0.3\" footer=\"0.3\" /><\/worksheet>", "_rels/.rels": "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"/xl/workbook.xml\" Id=\"R2ddad11a9f46414e\" /><\/Relationships>", "xl/_rels/workbook.xml.rels": "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\" Target=\"/xl/styles.xml\" Id=\"Re553c4db68af4743\" /><Relationship Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme\" Target=\"/xl/theme/theme1.xml\" Id=\"Ra46daed8836645c8\" /><Relationship Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings\" Target=\"/xl/sharedStrings.xml\" Id=\"R1824bd354e5344a9\" /><Relationship Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"/xl/worksheets/sheet1.xml\" Id=\"Rcf3532644efa4f91\" /><Relationship Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"/xl/worksheets/sheet2.xml\" Id=\"R9878b985d13248cc\" /><\/Relationships>", "[Content_Types].xml": "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\"><Default Extension=\"xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml\" /><Default Extension=\"rels\" ContentType=\"application/vnd.openxmlformats-package.relationships+xml\" /><Override PartName=\"/xl/styles.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml\" /><Override PartName=\"/xl/theme/theme1.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.theme+xml\" /><Override PartName=\"/xl/sharedStrings.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml\" /><Override PartName=\"/xl/worksheets/sheet1.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml\" /><Override PartName=\"/xl/worksheets/sheet2.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml\" /><\/Types>"};
+function equipmentWarning(){return notice('<strong>Ориентировочный подбор</strong><br>'+esc(EQUIPMENT_NOTICE),'amber');}
+function equipmentInputCard(src,i){
+ const strip=src.type.startsWith('strip_'),fixture=isFixture(src),cc=src.type==='led_external',track=['track24','track48'].includes(src.type);
+ const specific=[];
+ if(!track&&src.type!=='lamp'&&!['led_integrated','led_external','track230'].includes(src.type))specific.push(input(src,'voltage','Напряжение питания, В',{placeholder:isSPI(src)?'12 или 24':src.type==='lowv'?'12 или 24':'12, 24 или 48'}));
+ if(strip){specific.push(input(src,'length','Длина одного участка, м'));specific.push(input(src,'power','Мощность ленты, Вт/м'));}
+ else{specific.push(input(src,'unitPower','Мощность одного светильника, Вт'));specific.push(input(src,'units','Светильников на одном устройстве',{min:'1',step:'1'}));}
+ specific.push(input(src,'load','Или готовая нагрузка одного участка, Вт',{placeholder:'Если уже рассчитана'}));
+ if(cc){specific.push(input(src,'current','Рабочий ток светильника, мА',{min:'1',step:'1'}));specific.push(input(src,'vmin','Рабочее напряжение: min, В'));specific.push(input(src,'vmax','Рабочее напряжение: max, В'));}
+ if(isSPI(src))specific.push(input(src,'chip','Микросхема / сигнал SPI',{type:'text',placeholder:'Если известно'}));
+ const phase=src.features.some(x=>x==='dim')&&(['lamp','led_integrated','track230'].includes(src.type))&&['TRIAC','WIFI','DALI'].includes(state.selected);
+ const questions=(phase?field('Поддерживает фазовое диммирование TRIAC?',choiceGroup('phaseDim',undefined,{source:src}),'Для встроенного драйвера замена не предусматривается.'):'')+
+ (src.type==='track24'&&state.selected==='RF'?field('Совместимость трека с ШИМ подтверждена?',choiceGroup('rfCompatible',undefined,{source:src})): '')+
+ (isSPI(src)?field('Нужна синхронная работа нескольких участков?',choiceGroup('sync',undefined,{source:src})): '')+
+ (state.selected==='WIFI'&&['lamp','led_integrated','led_external','track230','track48'].includes(src.type)?field('Есть нейтраль в месте установки выключателя?',choiceGroup('neutral',undefined,{source:src})):'');
+ const total=sourceLoad(src).value;
+ return '<section class="equipment-input section"><div class="equipment-source-head"><span class="source-number">'+String(i+1).padStart(2,'0')+'</span><div><h2>'+esc(src.name||typeName(src))+'</h2><p class="small-muted">'+esc(typeName(src))+'<br>'+esc(src.features.map(f=>label('features',f)).join(' · '))+'</p></div></div>'+
+ '<details class="equipment-parameters" data-params="'+esc(src.id)+'" '+(src.paramsOpen?'open':'')+'><summary>Уточнить дополнительные параметры '+icon('down',16)+'</summary><div class="equipment-fields">'+
+ (track?'<p class="hint">Напряжение выбранной системы: <strong>'+sourceVoltage(src)+' В</strong>.</p>':'')+
+ '<div class="field-grid">'+specific.join('')+'</div>'+
+ '<p class="hint">Указывайте нагрузку одного устройства / участка, а не всего объекта. Если готовая нагрузка заполнена, расчёт по длине или количеству не используется.</p>'+
+ '<div class="calculated-load" data-load="'+esc(src.id)+'">Расчётная нагрузка: <strong>'+formatNumber(total)+(total!==null?' Вт':'')+'</strong></div>'+
+ (questions?'<div class="equipment-questions">'+questions+'</div>':'')+
+ '</div></details></section>';
+}
+function equipmentParametersPage(){
+ const selected=evaluate(state).all.find(x=>x.id===state.selected);
+ return equipmentWarning()+'<div class="summary-tags"><span class="tag">Выбрано: '+esc(selected?.title||proto[state.selected]?.title||'Уточните метод')+'</span><span class="tag">'+state.sources.length+' позиций света</span></div>'+
+ notice('Заполните известные параметры. При нехватке данных покажем, что нужно уточнить перед выбором конкретного устройства.','subtle')+
+ state.sources.map(equipmentInputCard).join('');
+}
+function componentHtml(item){
+ const products=item.products.map(p=>'<div class="sku-option"><span class="sku">'+esc(p.sku)+'</span><span class="sku-spec">'+esc(p.spec)+'</span></div>').join('');
+ return '<div class="equipment-item"><h4>'+esc(item.type)+'</h4>'+
+ (products?'<div class="maytoni-label">Предложение Maytoni</div>'+products:'')+
+ (item.unmatched?notice('Среди указанных в матрице артикулов нет подходящего по введённым параметрам. Уточните нагрузку / ток или разделите нагрузку на отдельные участки.','amber'):'')+
+ (item.note?'<p class="equipment-note">'+esc(item.note)+'</p>':'')+
+ (item.pending.length?'<p class="equipment-pending">'+esc(item.pending.join('. '))+'.</p>':'')+
+ (item.excluded.length?'<details class="filtered-products"><summary>Отсеяно по параметрам: '+item.excluded.length+'</summary>'+item.excluded.map(p=>'<p>'+esc(p.sku)+': '+esc(p.fail.join('; '))+'</p>').join('')+'</details>':'')+
+ '</div>';
+}
+function equipmentResultsPage(){
+ equipmentReport=buildEquipment(state,state.selected);
+ const r=equipmentReport;
+ return equipmentWarning()+'<div class="summary-tags"><span class="tag">Метод: '+esc(r.title)+'</span><span class="tag">'+r.sources.length+' позиций света</span></div>'+
+ (!r.valid?notice('<strong>Нужно пересмотреть метод управления.</strong><ul class="list">'+r.pending.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul><button type="button" class="btn btn-outline" data-action="go-method">Вернуться к методам</button>','amber'):
+ r.pending.length?notice('<strong>Условия выбранного метода</strong><ul class="list">'+r.pending.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul>','amber'):'')+
+ r.sources.map((src,i)=>'<section class="section equipment-result"><div class="equipment-source-head"><span class="source-number">'+String(i+1).padStart(2,'0')+'</span><div><h2>'+esc(src.name)+'</h2><p class="small-muted">'+esc(src.method)+' · '+esc(src.functions)+'</p></div></div>'+
+ '<div class="summary-tags">'+(src.voltage!==null?'<span class="tag">'+src.voltage+' В</span>':'')+(src.load.value!==null?'<span class="tag">Нагрузка: '+formatNumber(src.load.value)+' Вт</span>':'')+'</div>'+
+ (src.pending.length?notice(src.pending.map(esc).join('<br>'),'amber'):'')+
+ src.packages.map(pack=>'<div class="equipment-package"><h3>'+esc(pack.title)+'</h3>'+(pack.hasMismatch?'<div class="equipment-pending">Этот вариант требует пересмотра: для одного из устройств нет подходящего артикула.</div>':'')+pack.items.map(componentHtml).join('')+'</div>').join('')+
+ src.notes.map(n=>notice(esc(n),'subtle')).join('')+'</section>').join('')+
+ (r.system.length?section('Общее','Оборудование системы',r.system.map(componentHtml).join('')):'')+
+ '<div class="method-note">'+r.notes.map(n=>'<p>'+esc(n)+'</p>').join('')+'</div>'+
+ '<div class="section export-box"><div><h2>Сохранить результат</h2><p class="small-muted">В Excel попадут исходные параметры, варианты оборудования, артикулы и условия подбора.</p></div><button type="button" class="btn btn-primary" data-action="export-xlsx">Выгрузить в Excel</button></div>';
+}
+/* XLSX layout/styles are authored with @oai/artifact-tool at build time.
+   Client side fills this embedded workbook template. No network/CDN dependency.
+   Stored ZIP entries and inline-string cells preserve SKU zeroes and prevent formula injection. */
+function xmlSafe(v){return String(v??'').replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,'').replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'}[c]));}
+function xlsxCell(ref,v,style=3,formula=null,cached=null){
+ if(formula)return '<c r="'+ref+'" s="'+style+'"><f>'+xmlSafe(formula)+'</f>'+(cached!==null?'<v>'+cached+'</v>':'')+'</c>';
+ if(v===null||v===undefined||v==='')return '<c r="'+ref+'" s="'+style+'"/>';
+ if(typeof v==='number'&&Number.isFinite(v))return '<c r="'+ref+'" s="'+style+'"><v>'+v+'</v></c>';
+ return '<c r="'+ref+'" s="'+style+'" t="inlineStr"><is><t xml:space="preserve">'+xmlSafe(v)+'</t></is></c>';
+}
+function excelRows(raw,rep){
+ const s=normalize(raw),rows=[],parameterRows=[];
+ for(const src of rep.sources){
+  if(!src.packages.length)rows.push([src.name,src.method,'Требуется уточнение','Набор не определён','',src.pending.join('; '),src.notes.join('; ')]);
+  for(const pack of src.packages)for(const item of pack.items){
+   const products=item.products.length?item.products:[null];
+   for(const p of products)rows.push([src.name,src.method,pack.title,item.type,p?p.sku:'',p?(p.pending.length?'Уточнить: '+p.pending.join('; '):'Соответствует данным матрицы'):item.unmatched?'Нет подходящего артикула':'Подбор по типу',[
+    item.note,p?.spec,src.pending.join('; '),src.notes.join('; '),item.unmatched?item.excluded.map(x=>x.sku+': '+x.fail.join(', ')).join('; '):''
+   ].filter(Boolean).join('. ')]);
+  }
+ }
+ for(const item of rep.system)for(const p of item.products.length?item.products:[null])rows.push(['Общее оборудование',rep.title,'Общий комплект',item.type,p?.sku||'',p?.pending?.join('; ')||'Уточнить по проекту',[item.note,p?.spec].filter(Boolean).join('. ')]);
+ for(const n of [...rep.pending,...rep.notes])rows.push(['Условия проекта',rep.title,'','','','',n]);
+ for(const src of s.sources)parameterRows.push([src.name||typeName(src),typeName(src),src.features.map(f=>label('features',f)).join(', '),sourceVoltage(src),numeric(src.length),numeric(src.power),numeric(src.unitPower),numeric(src.units),numeric(src.load),sourceLoad(src).value,numeric(src.current),numeric(src.vmin),numeric(src.vmax)]);
+ return {rows,parameterRows};
+}
+function sheetXml(template,headers,rows,project,parameters=false){
+ const cell=(c,r,v)=>xlsxCell(String.fromCharCode(65+c)+r,v,r===2?4:r===3?5:r===6?7:parameters&&c>=3?11:!parameters&&c===4?10:3);
+ const opening=[[null],['Maytoni — '+(parameters?'Параметры проекта':'Подбор оборудования')],[EQUIPMENT_NOTICE],[project],['Источник подбора: «Матрица оборудования.xlsx». Артикулы в одном списке — варианты на выбор.'],headers];
+ let body=opening.map((row,i)=>'<row r="'+(i+1)+'" ht="'+(i===2?44:i===3||i===4?32:i===5?38:24)+'" customHeight="1">'+row.map((v,c)=>cell(c,i+1,v)).join('')+'</row>').join('');
+ body+=rows.map((row,i)=>{
+  const r=i+7;
+  let height=parameters?64:Math.min(220,Math.max(58,Math.ceil(Math.max(String(row[3]||'').length/36,String(row[5]||'').length/28,String(row[6]||'').length/58))*15+12));
+  return '<row r="'+r+'" ht="'+height+'" customHeight="1">'+row.map((v,c)=>{
+   if(parameters&&c===9){
+    const formula='IF(ISNUMBER(I'+r+'),I'+r+',IF(AND(ISNUMBER(E'+r+'),ISNUMBER(F'+r+')),E'+r+'*F'+r+',IF(AND(ISNUMBER(G'+r+'),ISNUMBER(H'+r+')),G'+r+'*H'+r+',"")))';
+    return v===null?cell(c,r,v):xlsxCell('J'+r,null,11,formula,v);
+   }
+   return cell(c,r,v);
+  }).join('')+'</row>';
+ }).join('');
+ let xml=template.replace(/<sheetData[\s\S]*?<\/sheetData>/,'<sheetData>'+body+'</sheetData>');
+ xml=xml.replace(/<dimension[^>]*\/>/,'<dimension ref="A1:'+String.fromCharCode(64+headers.length)+(rows.length+6)+'"/>');
+ const end=String.fromCharCode(64+headers.length);
+ xml=xml.replace(/<mergeCells[\s\S]*?<\/mergeCells>/,'');
+ xml=xml.replace('</sheetData>','</sheetData><mergeCells count="4"><mergeCell ref="A2:'+end+'2"/><mergeCell ref="A3:'+end+'3"/><mergeCell ref="A4:'+end+'4"/><mergeCell ref="A5:'+end+'5"/></mergeCells>');
+ return xml;
+}
+function crc32(bytes){let c=0xffffffff;for(const b of bytes){c^=b;for(let k=0;k<8;k++)c=(c>>>1)^((c&1)?0xedb88320:0);}return (c^0xffffffff)>>>0;}
+function zipStored(parts){
+ const enc=new TextEncoder(),files=[],central=[];let offset=0;
+ const u16=(dv,o,v)=>dv.setUint16(o,v,true),u32=(dv,o,v)=>dv.setUint32(o,v,true);
+ for(const [name,text] of Object.entries(parts)){
+  const path=enc.encode(name),data=enc.encode(text),crc=crc32(data),head=new Uint8Array(30+path.length),dv=new DataView(head.buffer);
+  u32(dv,0,0x04034b50);u16(dv,4,20);u16(dv,6,0x0800);u32(dv,14,crc);u32(dv,18,data.length);u32(dv,22,data.length);u16(dv,26,path.length);head.set(path,30);files.push(head,data);
+  const ch=new Uint8Array(46+path.length),cv=new DataView(ch.buffer);u32(cv,0,0x02014b50);u16(cv,4,20);u16(cv,6,20);u16(cv,8,0x0800);u32(cv,16,crc);u32(cv,20,data.length);u32(cv,24,data.length);u16(cv,28,path.length);u32(cv,42,offset);ch.set(path,46);central.push(ch);offset+=head.length+data.length;
+ }
+ const centralSize=central.reduce((a,x)=>a+x.length,0),end=new Uint8Array(22),dv=new DataView(end.buffer);u32(dv,0,0x06054b50);u16(dv,8,central.length);u16(dv,10,central.length);u32(dv,12,centralSize);u32(dv,16,offset);
+ return new Blob([...files,...central,end],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+}
+function createExcel(raw,selected){
+ const s=normalize(raw),rep=buildEquipment(s,selected),data=excelRows(s,rep),parts={...XLSX_TEMPLATE};
+ const project='Метод: '+rep.title+'; объект: '+label('object',s.object)+'; группы: '+label('groups',s.groups)+'; бюджет: '+label('budget',s.budget)+'; интернет: '+(s.internet==='yes'?'есть':s.internet==='no'?'нет':'не указан')+'.';
+ parts['xl/worksheets/sheet1.xml']=sheetXml(parts['xl/worksheets/sheet1.xml'],['Источник / зона','Метод','Вариант комплекта','Тип оборудования','Предложение Maytoni','Проверка параметров','Условия и уточнения'],data.rows,project);
+ parts['xl/worksheets/sheet2.xml']=sheetXml(parts['xl/worksheets/sheet2.xml'],['Источник / зона','Тип источника','Функции','Напряжение, В','Длина, м','Мощность, Вт/м','Мощность 1 шт., Вт','Количество, шт.','Нагрузка напрямую, Вт','Расчётная нагрузка, Вт','Ток, мА','Напряжение min, В','Напряжение max, В'],data.parameterRows,project,true);
+ parts['xl/workbook.xml']=parts['xl/workbook.xml'].replace(/<calcPr[^>]*\/>/,'<calcPr calcId="191029" fullCalcOnLoad="1"/>');
+ return zipStored(parts);
+}
+function downloadEquipmentExcel(){
+ const blob=createExcel(state,state.selected),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Maytoni_equipment_selection.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);showToast('Excel-файл сформирован.');
+}
+
+let state=defaults(), localAvailable=true, result=null, equipmentReport=null, lastDeleted=null, toastTimer;
+try{const saved=JSON.parse(localStorage.getItem(STORAGE)||localStorage.getItem('maytoni-control-configurator-v2')||'null');if(saved)state=normalize(saved);}catch{localAvailable=false;}
+function persist(){try{localStorage.setItem(STORAGE,JSON.stringify(state));localAvailable=true;}catch{localAvailable=false;}$('#saveStatus').textContent=localAvailable?'Черновик сохранён в этом браузере':'Ответы сохраняются до закрытия страницы';}
+function invalidate(){state.confirmed=false;result=null;persist();}
+function toggle(list,value,exclusive=['unknown','none']){if(exclusive.includes(value))return [value];let out=list.filter(x=>!exclusive.includes(x));out=out.includes(value)?out.filter(x=>x!==value):[...out,value];return out.length?out:['unknown'];}
+function choiceGroup(key,options=OPTIONS[key],{multiple=false,source=null,columns='',value}={}){const current=value??(source?source[key]:state[key]);return `<div class="choices ${columns}">${options.map(([v,title,sub])=>{const active=multiple?Array.isArray(current)&&current.includes(v):current===v;return `<button type="button" class="choice ${v==='unknown'?'unknown':''}" data-choice="${esc(key)}" data-value="${esc(v)}" ${source?`data-source="${esc(source.id)}"`:''} ${multiple?'data-multiple="1"':''} aria-pressed="${active}"><span><span class="label">${esc(title)}</span>${sub?`<span class="sub">${esc(sub)}</span>`:''}</span><span class="mark" aria-hidden="true">${active?'✓':''}</span></button>`;}).join('')}</div>`;}
+function field(labelText,body,hint=''){return `<fieldset class="field"><legend>${labelText}</legend>${body}${hint?`<p class="hint">${hint}</p>`:''}</fieldset>`;}
+function notice(text,kind=''){return `<div class="notice ${kind}">${icon('info')}<div>${text}</div></div>`;}
+function section(num,title,body,sub=''){return `<section class="section"><div class="section-head"><div><div class="number">${num}</div><h2>${title}</h2>${sub?`<p>${sub}</p>`:''}</div></div>${body}</section>`;}
+function objectPage(){return section('01','Объект и масштаб',field('Где будет работать освещение?',choiceGroup('object'))+field('Сколько групп нужно управлять независимо?',choiceGroup('groups'),'Одна группа — источники, которыми управляют одновременно. Это не число светильников.')+field('Бюджет на управление освещением',choiceGroup('budget',undefined,{columns:'four'}),'Бюджет влияет на приоритет подходящих решений.'))+section('02','Условия на объекте',field('На какой стадии ремонт?',choiceGroup('stage'))+(state.object!=='room'?'<div class="conditional">'+field(state.stage==='finished'?'Можно ли использовать шину DALI при готовой отделке?':'Есть ли возможность использовать шину DALI?',choiceGroup('bus',undefined,{columns:'two'}),'DALI нужна отдельная линия управления. Выберите «Можно проложить», если заказчик согласен на необходимые работы.')+(state.stage==='finished'&&state.bus==='approved'?notice('При прокладке шины после отделки возможны монтажные и восстановительные работы.','amber'):'')+'</div>':'')+'<div class="section-separator"></div>'+field('Есть ли стабильный интернет?',choiceGroup('internet',undefined,{columns:'two'}),'Для рассматриваемых решений Wi-Fi и ZigBee нужен стабильный интернет. Если пока не знаете, вопрос можно пропустить.'));}
+
+function input(s,key,title,{placeholder='Не знаю / не заполнено',min='0.1',step='any',type='number'}={}){const id=`${s.id}-${key}`;return `<div class="field"><label class="field-label" for="${id}">${title}</label><input class="input" id="${id}" data-source="${s.id}" data-field="${key}" type="${type}" ${type==='number'?`min="${min}" step="${step}" inputmode="${step==='1'?'numeric':'decimal'}"`:''} value="${esc(s[key])}" placeholder="${esc(placeholder)}" ${type==='text'?'maxlength="60"':''}></div>`;}
+function sourceCard(s,index){const available=validFeatures(s.type), features=OPTIONS.features.filter(x=>available.includes(x[0])), brief=s.features.includes('unknown')?'Функции пока не определены':s.features.map(x=>label('features',x)).join(' · ');
+ return `<details class="source-card" data-card="${s.id}" ${s.open?'open':''}><summary class="source-summary"><span class="source-number">${String(index+1).padStart(2,'0')}</span><span class="source-summary-copy"><strong data-source-title="${s.id}">${esc(s.name||typeName(s))}</strong><small>${esc(brief)}</small></span><span class="source-chevron">${icon('down',16)}</span><button class="icon-btn" type="button" data-action="delete-source" data-id="${s.id}" aria-label="Удалить источник ${index+1}">${icon('trash',17)}</button></summary><div class="source-body">${field('Тип источника',`<select class="select" aria-label="Тип источника ${index+1}" data-source="${s.id}" data-field="type">${TYPES.map(([v,l])=>`<option value="${v}" ${v===s.type?'selected':''}>${esc(l)}</option>`).join('')}</select>`)}${field('Название или зона — необязательно',`<input class="input" data-source="${s.id}" data-field="name" aria-label="Название источника ${index+1}" type="text" maxlength="60" value="${esc(s.name)}" placeholder="Например, подвесы над столом">`)}${field('Что нужно менять?',choiceGroup('features',features,{multiple:true,source:s,columns:'two'}),'Можно выбрать несколько функций. Включение и выключение доступно и при регулировке яркости или цвета.')}${isFixture(s)?`<div style="margin-top:22px">${input(s,'quantity','Самая большая группа с этим типом: светильников всего',{min:'1',step:'1'})}<p class="hint">Считайте все светильники в такой группе, включая другие типы. Для TRIAC — не более 15. Если группы ещё не определены, поле можно пропустить.</p></div>`:''}${isSPI(s)?`<div class="conditional">${field('Как управлять этой SPI-подсветкой?',choiceGroup('spiControl',undefined,{source:s}),'Для смартфона используется Wi-Fi–SPI-контроллер. Этот выбор относится только к данной подсветке.')}</div>`:''}</div></details>`;
+}
+function sourcesPage(){return `<div class="source-meta"><div><h2>Источники в проекте</h2><div class="small-muted">Каждый тип света — отдельная карточка</div></div><span class="count-tag">${state.sources.length} ${state.sources.length===1?'позиция':'позиций'}</span></div><div class="source-list">${state.sources.map(sourceCard).join('')}</div><button type="button" class="btn btn-outline add-source" data-action="add-source">${icon('plus')}Добавить ещё источник</button>${notice('Ленты, треки и светильники можно добавлять в любом сочетании. Параметры предыдущих карточек сохраняются.','subtle')}`;}
+function controlsPage(){const base=state.sources.filter(x=>!isSPI(x)),spi=state.sources.filter(isSPI),pureSPI=spi.length>0&&!base.length, controls=state.controls.filter(x=>x!=='unknown'), digital=controls.some(x=>['phone','voice'].includes(x));return (pureSPI?section('01','Управление SPI-подсветкой',notice('Способ управления выбран в карточках источников. '+spi.map((s,i)=>`${esc(s.name||'SPI-подсветка '+(i+1))}: <strong>${esc(label('spiControl',s.spiControl))}</strong>`).join('<br>'))):section('01',spi.length?'Управление основным светом':'Привычный способ управления',`${spi.length?'<p class="controls-caption">Эти способы относятся к обычным источникам. SPI-подсветка использует управление, выбранное в её карточке.</p>':''}${field('Как пользователь хочет управлять светом?',choiceGroup('controls',undefined,{multiple:true,columns:'two'}),'Можно выбрать несколько способов. Для Wi-Fi и ZigBee нужен смартфон или голос — достаточно одного.')}${controls.includes('wall')&&digital?`<div class="conditional">${field('Какой способ будет основным?',choiceGroup('priority',undefined,{columns:'two'}))}</div>`:''}`))+section('02','Дополнительные возможности',field(pureSPI?'Что ещё потребуется от SPI-контроллера?':spi.length?'Что ещё нужно для основного света?':'Что ещё нужно в проекте?',choiceGroup('extras',undefined,{multiple:true,columns:'two'}))+`${state.extras.includes('scenes')?`<div class="conditional">${field('Сколько сцен нужно сохранять?',choiceGroup('scenes'))}<p class="hint">Сцена — сохранённое состояние света, например «Ужин» или «Просмотр фильма».</p></div>`:''}`+`${pureSPI?notice('Динамические эффекты и сохраняемые сцены — разные функции. Дополнительные возможности уточняются у конкретного SPI-контроллера.','subtle'):''}`);}
+function decisionCard(r,i){const active=state.selected===r.id;return `<button type="button" class="result-option" aria-pressed="${active}" data-action="select-result" data-protocol="${r.id}"><span class="rank"><span>${i===0?'01 · Лучшее соответствие':`0${i+1} · Альтернатива`}</span><span class="select-dot" aria-hidden="true">${active?'✓':''}</span></span><span class="protocol-name">${esc(r.title)}</span><span><span class="score">${r.score}<small>%</small></span><span class="score-label" style="display:block">соответствие задаче</span><span class="score-track"><i style="width:${r.score}%"></i></span></span>${r.provisional?`<span class="result-note">Есть условия для уточнения</span>`:''}</button>`;}
+function exclusionsHtml(){if(!result?.excluded.length)return '';return `<details class="exclusions"><summary>Почему другие варианты не предложены?</summary>${result.excluded.map(r=>`<div class="excluded"><strong>${esc(proto[r.id].title)}</strong><div>${r.fail.slice(0,3).map(esc).join('<br>')}</div></div>`).join('')}</details>`;}
+function selectedDetail(r){return `<section class="section"><div class="details-head"><div><div class="eyebrow">${state.confirmed?'Выбор подтверждён':r.id===result.candidates[0].id?(r.provisional?'Предварительная рекомендация':'Рекомендуемое решение'):'Выбранная альтернатива'}</div><h2>${r.provisional?'Может подойти':r.id===result.candidates[0].id?'Вам больше всего подходит':'Вы выбрали'} ${esc(r.title)}</h2></div><span class="pill">${r.score}% соответствия</span></div><p class="protocol-description">${esc(proto[r.id].description)}</p><div class="reason-grid">${r.reasons.map(t=>`<div class="reason">${icon('check',15)}<span>${esc(t)}</span></div>`).join('')}</div>${r.spi?`<div class="subsystem"><h3>SPI-подсветка — отдельно</h3><p>Основное освещение использует ${esc(proto[r.id].title)}. Для динамической ленты предусмотрена отдельная SPI-подсистема.</p>${state.sources.filter(isSPI).map(s=>`<p><strong>${esc(s.name||'SPI-подсветка')}</strong>: ${s.spiControl==='phone'?'смартфон через Wi-Fi–SPI-контроллер':s.spiControl==='remote'?'управление с пульта':'способ управления нужно уточнить'}.</p>`).join('')}</div>`:''}${r.pending.length?notice(`<strong>Что ещё уточнить</strong><ul class="list">${r.pending.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>`,'amber'):''}${r.notices.length?notice(r.notices.map(esc).join('<br>')):''}</section>`;}
+function resultPage(){result=evaluate(state);const tags=[known(state.object)?label('object',state.object):null,known(state.groups)?label('groups',state.groups):null,known(state.budget)?'Бюджет: '+label('budget',state.budget).toLowerCase():null,`${state.sources.length} позиций света`].filter(Boolean);if(!result.candidates.some(x=>x.id===state.selected)){state.selected=result.candidates[0]?.id||null;state.confirmed=false;}if(result.insufficient)return `<div class="empty-result"><div class="empty-symbol">${icon('info',25)}</div><h2>Пока недостаточно данных для подбора</h2><p>Укажите хотя бы один тип источника и нужную функцию света. Остальные неизвестные параметры можно оставить на потом.</p><button class="btn btn-primary" type="button" data-action="go-sources">Уточнить источники ${icon('arrow',17)}</button></div>`;if(!result.candidates.length)return `<div class="empty-result"><div class="empty-symbol">${icon('info',25)}</div><h2>Единого подходящего варианта пока нет</h2><p>В ответах есть условия, которые исключают доступные решения. Ниже указано, какие именно — можно вернуться и уточнить проект.</p><button class="btn btn-primary" type="button" data-action="go-object">Уточнить параметры ${icon('arrow',17)}</button></div>${exclusionsHtml()}`;const r=result.candidates.find(x=>x.id===state.selected);return `<div class="summary-tags">${tags.map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div><div class="result-grid ${result.candidates.length===1?'one':result.candidates.length===2?'two':''}">${result.candidates.map(decisionCard).join('')}</div>${selectedDetail(r)}<p class="method-note">Показано до трёх подходящих решений. Обязательные ограничения проверяются до расчёта рейтинга. Проценты отражают подтверждённые условия и предпочтения проекта; неизвестные данные не считаются совпадением. Это оценка пригодности метода, а совместимость конкретного оборудования проверяется отдельно.</p>${exclusionsHtml()}`;}
+const STEPS=['Объект','Источники','Управление','Метод','Параметры','Подбор'];
+const META=[
+ ['Объект и масштаб','Начнём с условий проекта. Неизвестные параметры можно уточнить позже.'],
+ ['Какими источниками будем управлять?','Добавьте все типы источников и отметьте нужные функции. Технические параметры уточним после выбора метода.'],
+ ['Как будет работать управление?','Выберите удобные способы управления и дополнительные возможности.'],
+ ['Подходящие решения','Сравните варианты, прочитайте пояснения и выберите метод управления.'],
+ ['Уточним параметры оборудования','Проверьте список источников и раскройте дополнительные параметры рядом с каждой позицией.'],
+ ['Оборудование для вашего проекта','Сначала указан тип устройства, затем подходящие предложения Maytoni из матрицы.']
+];
+function render(){
+ const active=document.activeElement;let selector=null;
+ if(active?.dataset.choice)selector='[data-choice="'+active.dataset.choice+'"][data-value="'+active.dataset.value+'"]'+(active.dataset.source?'[data-source="'+active.dataset.source+'"]':'');
+ else if(active?.dataset.field&&active?.dataset.source)selector='[data-field="'+active.dataset.field+'"][data-source="'+active.dataset.source+'"]';
+ if(state.step>3&&(!state.selected||!state.confirmed))state.step=3;
+ $('#steps').innerHTML=STEPS.map((t,i)=>'<button type="button" class="step '+(i<state.step?'done':'')+'" data-go="'+i+'" '+(i===state.step?'aria-current="step"':'')+' '+(i>3&&!state.confirmed?'disabled':'')+'><span aria-hidden="true">'+(i<state.step?'✓':i+1)+'</span><span>'+t+'</span></button>').join('');
+ $('#eyebrow').textContent='Шаг '+(state.step+1)+' из '+STEPS.length;
+ $('#title').textContent=META[state.step][0];$('#subtitle').textContent=META[state.step][1];
+ $('#page').innerHTML=[objectPage,sourcesPage,controlsPage,resultPage,equipmentParametersPage,equipmentResultsPage][state.step]();
+ $('#progressBar').style.width=((state.step+1)/STEPS.length*100)+'%';$('#back').disabled=state.step===0;
+ const next=$('#next');next.disabled=false;
+ next.innerHTML=state.step===5?'Выгрузить в Excel':state.step===4?'Подобрать оборудование':state.step===3?(result?.candidates.length?'К подбору оборудования':'Уточнить ответы'):state.step===2?'Подобрать метод':'Далее '+icon('arrow',16);
+ if(selector)$(selector)?.focus({preventScroll:true});persist();
+}
+function revealInput(el){if(!el)return;for(let p=el.parentElement;p&&p.id!=='page';p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;el.focus({preventScroll:true});el.scrollIntoView({block:'center',behavior:'auto'});}
+function validPage(){
+ const invalid=$('#page').querySelector('input:invalid');if(invalid){revealInput(invalid);invalid.reportValidity();return false;}
+ if(state.step===4)for(const src of state.sources)if(numeric(src.vmin)!==null&&numeric(src.vmax)!==null&&Number(src.vmin)>Number(src.vmax)){showToast('Минимальное напряжение не может быть больше максимального.');revealInput($('[data-source="'+src.id+'"][data-field="vmax"]'));return false;}
+ return true;
+}
+function go(step){
+ if(!validPage())return;if(step>3&&!state.confirmed){showToast('Сначала выберите и подтвердите метод управления.');return;}
+ state.step=Math.max(0,Math.min(5,step));render();window.scrollTo({top:0,behavior:'auto'});$('#title').focus({preventScroll:true});
+}
+function showToast(text,undo=false){clearTimeout(toastTimer);$('#toast').innerHTML=esc(text)+(undo?'<button type="button" data-action="undo-delete">Вернуть</button>':'');$('#toast').hidden=false;toastTimer=setTimeout(()=>{$('#toast').hidden=true;},undo?9000:4500);}
+function resultText(){const r=result?.candidates.find(x=>x.id===state.selected);return r?'Maytoni\nВыбрано: '+r.title+'\nСоответствие: '+r.score+'%\n'+proto[r.id].description:'';}
+document.addEventListener('click',async e=>{
+ const choice=e.target.closest('[data-choice]');
+ if(choice){const key=choice.dataset.choice,v=choice.dataset.value,source=choice.dataset.source?state.sources.find(x=>x.id===choice.dataset.source):null,obj=source||state;
+  if(!Object.hasOwn(obj,key))return;obj[key]=choice.dataset.multiple?toggle(obj[key],v):v;
+  if(state.step<4)invalidate();else{equipmentReport=null;persist();}render();return;
+ }
+ const nav=e.target.closest('[data-go]');if(nav){if(!nav.disabled)go(Number(nav.dataset.go));return;}
+ const button=e.target.closest('[data-action]');if(!button)return;const action=button.dataset.action;
+ if(action==='add-source'){if(!validPage())return;state.sources.forEach(x=>x.open=false);const src=newSource();state.sources.push(src);invalidate();render();requestAnimationFrame(()=>{$('[data-card="'+src.id+'"]').scrollIntoView({block:'start',behavior:'smooth'});$('[data-source="'+src.id+'"][data-field="type"]').focus({preventScroll:true});});}
+ if(action==='delete-source'){e.preventDefault();lastDeleted={source:state.sources.find(x=>x.id===button.dataset.id),index:state.sources.findIndex(x=>x.id===button.dataset.id)};state.sources=state.sources.filter(x=>x.id!==button.dataset.id);if(!state.sources.length)state.sources=[newSource()];invalidate();render();showToast('Источник удалён.',true);}
+ if(action==='undo-delete'&&lastDeleted){if(state.sources.length===1&&state.sources[0].type==='unknown'&&!state.sources[0].name&&state.sources[0].features.includes('unknown'))state.sources=[];state.sources.splice(lastDeleted.index,0,lastDeleted.source);lastDeleted=null;invalidate();render();$('#toast').hidden=true;}
+ if(action==='select-result'){state.selected=button.dataset.protocol;state.confirmed=false;equipmentReport=null;render();}
+ if(action==='go-sources')go(1);if(action==='go-object')go(0);if(action==='go-method')go(3);
+ if(action==='export-xlsx'){try{downloadEquipmentExcel();}catch(err){showToast('Не удалось сформировать Excel. Попробуйте снова.');console.error(err);}}
+ if(action==='copy-result'){try{await navigator.clipboard.writeText(resultText());showToast('Итог скопирован.');}catch{showToast('Копирование недоступно. Используйте экспорт Excel после подбора.');}}
+});
+document.addEventListener('input',e=>{
+ const el=e.target;if(!el.dataset.field||!el.dataset.source||el.tagName==='SELECT')return;const src=state.sources.find(x=>x.id===el.dataset.source);if(!src||!Object.hasOwn(src,el.dataset.field))return;src[el.dataset.field]=el.value;
+ if(state.step<4)invalidate();else{equipmentReport=null;persist();}
+ if(el.dataset.field==='name'){const title=$('[data-source-title="'+src.id+'"]');if(title)title.textContent=src.name||typeName(src);}
+ const calculated=$('[data-load="'+src.id+'"]');if(calculated){const n=sourceLoad(src).value;calculated.innerHTML='Расчётная нагрузка: <strong>'+formatNumber(n)+(n!==null?' Вт':'')+'</strong>';}
+});
+document.addEventListener('change',e=>{
+ const el=e.target;if(el.tagName!=='SELECT'||el.dataset.field!=='type')return;const src=state.sources.find(x=>x.id===el.dataset.source);if(!src)return;
+ src.type=el.value;src.features=src.features.filter(x=>validFeatures(src.type).includes(x));if(!src.features.length)src.features=['unknown'];src.open=true;invalidate();render();
+});
+document.addEventListener('toggle',e=>{const id=e.target.dataset?.card||e.target.dataset?.params;if(!id)return;const src=state.sources.find(x=>x.id===id);if(src){src[e.target.dataset.params?'paramsOpen':'open']=e.target.open;persist();}},true);
+$('#back').addEventListener('click',()=>go(Math.max(0,state.step-1)));
+$('#next').addEventListener('click',()=>{
+ if(state.step===5){downloadEquipmentExcel();return;}if(state.step<3){go(state.step+1);return;}if(state.step===4){go(5);return;}
+ if(!result?.candidates.length){go(result?.insufficient?1:0);return;}state.confirmed=true;go(4);
+});
+$('#reset').addEventListener('click',()=>{if(confirm('Начать заново и очистить текущие ответы?')){state=defaults();result=null;equipmentReport=null;lastDeleted=null;render();window.scrollTo({top:0,behavior:'auto'});}});
+window.MaytoniControl=Object.freeze({version:'3.0',evaluate,defaults,normalize,buildEquipment,matchProduct,sourceLoad,createExcel,catalog:CATALOG});
+render();
+
+})();
+</script>
+</body>
+</html>
